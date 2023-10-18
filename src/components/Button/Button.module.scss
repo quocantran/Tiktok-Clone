@@ -1,0 +1,67 @@
+.wrapper{
+    font-size: 16px;
+    border-radius: 4px;
+    border: solid 1px transparent;
+    background-color: var(--background-color-white);
+    font-weight: 700;
+    min-width: 100px;
+    padding: 0px 16px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Arial', sans-serif;
+
+}
+
+.primary{
+    color: var(--button-white-color);
+    background-color: var(--primary-color);
+}
+
+.outline{
+    color: var(--primary-color);
+    border-color: currentColor;
+    border-radius: 0;
+    &:hover{
+        background-color: var(--hover-button-color);
+    }
+}
+
+.large{
+    min-width: 112px;
+    padding: 14px 16px;
+    border-radius: 4px;
+}
+
+.download{
+    border-radius: 0;
+    color: var(--button-white-color);
+    min-width: 188px;
+    min-height: 48px;
+    
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    border-radius: 2px;
+    margin-top: 20px;
+    cursor: pointer;
+
+}
+
+.follow-btn{
+    position: absolute;
+    top: 28px;
+    right: 0;
+    border-radius: 2px;
+}
+
+.button-following{
+    font-size: 17px;
+    margin-top: 8px;
+    min-height: 37px;
+    min-width: 164px;
+    margin: 0 auto;
+    
+}

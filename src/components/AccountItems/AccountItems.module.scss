@@ -1,0 +1,38 @@
+.wrapper{
+    display: flex;
+    align-items: center;
+    padding: 9px 16px;
+    cursor: pointer;
+    &:hover{
+        background: var(--background-color);
+    }
+}
+
+.user-icon{
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.nick-name{
+    font-size: 14px;
+    line-height: 18px;
+    color: var(--text-color);
+    font-weight: 400;
+    overflow: hidden;
+}
+
+.info .name{
+    font-size: 16px;
+    line-height: 21px;
+    font-weight: 600;
+    overflow: hidden;
+    color: var(--text-color);
+}
+
+.check-icon{
+    margin-left: 9px;
+    color: #20d5ec;
+}

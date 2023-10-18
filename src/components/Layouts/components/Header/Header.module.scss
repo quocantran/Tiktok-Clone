@@ -1,0 +1,163 @@
+.wrapper {
+    height: 60px;
+    box-shadow: var(--box-shadow-header);
+    display: flex;
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding-left: 20px;
+    padding-right: 24px;
+    background-color: var(--background-color-white);
+}
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+}
+.icon {
+    display: flex;
+    align-items: center;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+}
+.actions .upload-btn {
+    display: flex;
+    align-items: center;
+    min-width: 110px;
+    padding: 0 16px;
+    height: 36px;
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    border-radius: 2px;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 0 16px;
+    margin-right: 16px;
+
+    &:hover {
+        background-color: var(--hover-background-color);
+    }
+    color: var(--text-color);
+    background-color: var(--button-background-color);
+}
+
+.download-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 22px;
+}
+
+.menu-icon {
+    margin-left: 16px;
+    position: relative;
+    cursor: pointer;
+    font-style: normal;
+    padding: 3px 6px;
+    svg{
+        color: var(--text-color);
+    }
+}
+
+.user-icon {
+    margin-left: 24px;
+
+    img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+    }
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inbox-icon {
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    img {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+.message-icon {
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    img {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+.download-icon-user {
+    width: 48px;
+    height: 48px;
+    margin-left: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.upload-btn-user {
+    min-width: 116px;
+    padding: 0 16px;
+    height: 36px;
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    border-radius: 2px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+        background-color: var(--background-color);
+    }
+    color: var(--text-color);
+    background-color: var(--button-background-color);
+}
+
+.download-icon-tiktok {
+    width: 116px;
+    height: 100px;
+}
+
+.title-download {
+    color: var(--text-color);
+
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 21px;
+    text-align: center;
+    margin-top: 8px;
+}
+.mobile-app {
+    color: var(--text-color);
+    width: 182px;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    margin-top: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    svg {
+        margin-left: 4px;
+    }
+}

@@ -1,0 +1,67 @@
+.wrapper {
+    padding: 16px 0;
+    color: var(--text-color);
+    position: relative;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    &:before {
+        content: '';
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        top: 0;
+        height: 1px;
+        background: var(--background-color);
+    }
+}
+.header{
+    padding: 0 8px;
+    margin-bottom: 8px;
+}
+
+.account-item{
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    img{
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin-right: 12px;
+    }
+    &:hover{
+        background-color: var(--background-color);
+    }
+    transition: background-color 200ms ease-in-out 0s;
+}
+
+.full-name{
+    color: var(--text-color);
+    
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 21px;
+    margin-top: -2px;
+    max-width: 145px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.see-more{
+    padding: 0px 8px;
+    margin-top: 8px;
+    cursor: pointer;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 18px;
+}
+
+.tick{
+    color: #20d5ec;
+    margin-left: 5px;
+}

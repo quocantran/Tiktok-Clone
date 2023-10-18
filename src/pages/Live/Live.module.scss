@@ -1,0 +1,14 @@
+.wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+}
+
+
+.container{
+    h2{
+        color: var(--text-color);
+        font-size: 70px;
+    }
+}
