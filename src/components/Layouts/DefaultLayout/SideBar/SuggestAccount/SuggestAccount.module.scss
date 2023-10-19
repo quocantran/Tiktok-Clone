@@ -65,3 +65,15 @@
     color: #20d5ec;
     margin-left: 5px;
 }
+
+@media (max-width : 1072px){
+    .user-info{
+        display: none;
+    }
+    .header{
+        display: none;
+    }
+    .see-more{
+        display: none;
+    }
+}

@@ -97,3 +97,15 @@
         }
     }
 }
+
+@media (max-width : 1072px){
+    .wrapper{
+        width: 72px;
+    }
+    .footer-sidebar{
+        display: none;
+    }
+    .effect-link{
+        display: none;
+    }
+}

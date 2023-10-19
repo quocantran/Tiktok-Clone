@@ -161,3 +161,12 @@
         margin-left: 4px;
     }
 }
+
+@media (max-width : 768px){
+    .upload-btn{
+        display: none;
+    }
+    .upload-btn-user{
+        display: none;
+    }
+}

@@ -257,3 +257,11 @@
     }
 }
 
+@media (max-width: 768px) {
+    .video-player{
+        height: 900px;
+    }
+    .video-control{
+        width: 450px;
+    }
+}

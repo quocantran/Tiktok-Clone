@@ -86,3 +86,9 @@
     font-weight: 600;
     color: var(--text-color);
 }
+
+@media (max-width : 1072px){
+    .wrap-input{
+        display: none;
+    }
+}

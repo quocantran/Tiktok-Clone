@@ -9,3 +9,9 @@
     flex : 1;
     margin-left: 240px;
 }
+
+@media (max-width : 768px){
+    .content{
+        margin-left: 130px;
+    }
+}
