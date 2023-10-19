@@ -15,14 +15,14 @@ import { useTranslation } from 'react-i18next';
 import CommentItem from './CommentItem';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
-
+import Loading from '../../components/Loading'
 const cx = classNames.bind(styles);
 
 const Comment = () => {
     const { id } = useParams();
 
     const [data, setData] = useState({});
-
+    const [loading,setLoading] = useState(true);
     const postBtn = useRef();
     const imgRef = useRef();
     const muted = useSelector((state) => state.volume.muted);
@@ -147,6 +147,7 @@ const Comment = () => {
             })
             .then((res) => {
                 setData(res.data.data);
+                setLoading(false);
             })
             .catch();
     }, []);
@@ -217,6 +218,7 @@ const Comment = () => {
                             autoPlay
                             loop
                         ></video>
+                        {loading ? <Loading className = {cx('comment-video-loading')}/> : Fragment}
                     </div>
                     <button
                         onClick={() => {

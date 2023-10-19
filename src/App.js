@@ -39,7 +39,7 @@ function App() {
     return (
         <Router>
             {loading ? (
-                <>123</>
+                <></>
             ) : (
                 <div className="App">
                     <Routes>

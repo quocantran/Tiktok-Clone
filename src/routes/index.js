@@ -17,11 +17,7 @@ const publicRoutes = [
         path: '/following',
         component: Following,
     },
-    {
-        path: '/upload',
-        component: Upload,
-        layout: null,
-    },
+    
 
     {
         path : '/live',

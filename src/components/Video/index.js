@@ -95,7 +95,7 @@ const Video = ({ data, muted, followed,isLike, volumeValue }) => {
     };
 
     const handlePlayVideoInView = useCallback(() => {
-        console.log(document.visibilityState);
+        
         const video = videoRef.current;
         const bounding = videoRef.current.getBoundingClientRect();
 

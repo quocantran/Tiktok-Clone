@@ -28,8 +28,7 @@ import noImg from '../../../../assests/png/noImage.jpg';
 import Search from '../Search';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import request from '../../../../ultis/request';
-import Cookies from 'js-cookie';
+
 import verifyUser from '../../../../apiServices/verifyUser';
 
 const cx = classNames.bind(styles);
@@ -122,12 +121,12 @@ const Header = () => {
 
                 {user ? (
                     <div className={cx('actions')}>
-                        <a href="/upload" className={cx('upload-btn-user')}>
+                        <div className={cx('upload-btn-user')}>
                             <div className={cx('plus-icon')}>
                                 <FontAwesomeIcon icon={faPlus} />
                             </div>
                             <span>{t('Upload')}</span>
-                        </a>
+                        </div>
 
                         <div>
                             <Tippy
@@ -201,12 +200,12 @@ const Header = () => {
                     </div>
                 ) : (
                     <div className={cx('actions')}>
-                        <a href="/upload" className={cx('upload-btn')}>
+                        <div className={cx('upload-btn')}>
                             <div className={cx('plus-icon')}>
                                 <FontAwesomeIcon icon={faPlus} />
                             </div>
                             <span>{t('Upload')}</span>
-                        </a>
+                        </div>
 
                         <Button to="/login" primary>
                             {t('Log in')}
