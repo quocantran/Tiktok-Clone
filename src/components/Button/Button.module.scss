@@ -65,3 +65,9 @@
     margin: 0 auto;
     
 }
+
+@media (max-width: 767px) {
+    .follow-btn{
+        right: 20px;
+    }
+}
