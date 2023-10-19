@@ -379,10 +379,9 @@
 }
 .submit-btn {
     opacity: 0.5;
-    
 }
 
-.submit-btn.active{
+.submit-btn.active {
     opacity: 1;
     background-color: var(--primary-color);
     cursor: pointer;
@@ -444,5 +443,12 @@
         opacity: 1;
         -webkit-transform: scale(1);
         transform: scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .video-item {
+        flex-basis: 50%;
+        max-width: 50%;
     }
 }
