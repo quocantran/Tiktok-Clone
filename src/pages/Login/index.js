@@ -5,13 +5,14 @@ import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { loginUser } from '../../redux/apiRequest';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import verifyUser from '../../apiServices/verifyUser';
 import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
 const Login = () => {
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [user,setUser] = useState();
@@ -22,7 +23,7 @@ const Login = () => {
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    
     const handleLogin = async (e) => {
         e.preventDefault();
         const user = {

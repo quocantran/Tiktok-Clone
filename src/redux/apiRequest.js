@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 import request from '../ultis/request';
 
-export const loginUser = async (user, dispatch, navigate) => {
+export const loginUser = async (user, dispatch, navigate,isNavigateHome) => {
     dispatch(loginStart());
 
     try {
