@@ -113,3 +113,14 @@
         margin-bottom: 8px;
     }
 }
+
+@media (max-width: 768px) {
+    .suggest-following{
+        max-width: 514px;
+        margin-left: 40px;
+    }
+    .suggest-item-wrapper{
+        flex-basis: 50%;
+        max-width: 50%;
+    }
+}

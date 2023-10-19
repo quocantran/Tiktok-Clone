@@ -51,16 +51,11 @@ const Following = () => {
             getSuggestUser();
         }
     }, [page, isAuth]);
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    const handleScroll = useCallback(() => {
+    const handleScroll = (() => {
+        console.log(window.scrollY)
         if (window.scrollY + window.innerHeight >= document.body.offsetHeight) {
             setPage(page => page+ 1);
+            console.log(1);
         }
         if (window.scrollY >= 100) {
             setHideBtn(false);
@@ -68,6 +63,14 @@ const Following = () => {
             setHideBtn(true);
         }
     });
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    
 
     const handeScrollToTop = () => {
         window.scrollTo({
