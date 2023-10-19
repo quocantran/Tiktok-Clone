@@ -101,6 +101,7 @@
 @media (max-width : 1072px){
     .wrapper{
         width: 72px;
+        border-right: 1px solid var(--border-color-grey);
     }
     .footer-sidebar{
         display: none;
