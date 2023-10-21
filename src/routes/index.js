@@ -43,8 +43,9 @@ const publicRoutes = [
         path: '/@:nickname',
         component: Profile,
     },
+    
     {
-        path : '/@:nickname/video/:id',
+        path : '/all/video/:id',
         component: Comment,
         
     }

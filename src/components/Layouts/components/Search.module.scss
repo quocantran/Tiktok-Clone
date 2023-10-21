@@ -60,9 +60,10 @@
 }
 
 .search-btn {
-    padding: 11px 16px 11px 12px;
+    padding: 12px 16px 13px 12px;
     margin: -12px -16px;
-
+    border-top-right-radius: 92px;
+    border-bottom-right-radius: 92px;
     cursor: pointer;
     outline: none;
     border: none;

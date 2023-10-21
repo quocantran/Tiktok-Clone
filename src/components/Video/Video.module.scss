@@ -258,6 +258,9 @@
 }
 
 @media (max-width: 768px) {
+    *:active {
+        -webkit-tap-highlight-color: transparent;
+    }
     .video-player{
         height: 900px;
     }

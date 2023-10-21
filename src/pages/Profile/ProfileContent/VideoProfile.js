@@ -48,7 +48,7 @@ const VideoProfile = ({ index, setIndex, data, idx }) => {
                 <div className={cx('item-content')}>
                     <div
                         onClick={() => {
-                            navigate(`/@${data.user.nickname}/video/${data.id}`);
+                            navigate(`/all/video/${data.id}`);
                         }}
                         className={cx('video-wrapper')}
                     >

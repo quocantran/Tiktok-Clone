@@ -42,7 +42,7 @@ const Video = ({ data, muted, followed,isLike, volumeValue }) => {
     };
 
     const handleClick = () => {
-        navigate(`/@${data.user.nickname}/video/${data.id}`);
+        navigate(`/all/video/${data.id}`);
     };
 
     const handleChange = (e) => {
@@ -310,7 +310,7 @@ const Video = ({ data, muted, followed,isLike, volumeValue }) => {
                                         navigate('/login');
                                         toast.error('Vui lòng đăng nhập!');
                                     } else {
-                                        navigate(`/@${dataVideo.user.nickname}/video/${dataVideo.id}`);
+                                        navigate(`/all/video/${dataVideo.id}`);
                                     }
                                 }}
                                 className={cx('interact-btn')}

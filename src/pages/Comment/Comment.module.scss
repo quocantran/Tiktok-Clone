@@ -1,6 +1,3 @@
-.body {
-    --video-time: 0%;
-}
 
 .wrapper {
     display: flex;
@@ -17,6 +14,7 @@
     flex: 1 0 600px;
 }
 .video-player {
+    --video-time : 0%;
     cursor: pointer;
     height: 100%;
     overflow: hidden;
@@ -140,6 +138,14 @@
 
 .next-btn {
     top: calc(50% + 8px);
+    right: 20px;
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+.prev-btn{
+    top: calc(50% - 48px);
     right: 20px;
     svg {
         width: 20px;
@@ -546,6 +552,9 @@
 }
 
 @media (max-width: 768px){
+    *:active {
+        -webkit-tap-highlight-color: transparent;
+    }
     .video-container{
         flex-basis: 100%;
     }

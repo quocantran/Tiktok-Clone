@@ -14,7 +14,7 @@ export const loginUser = async (user, dispatch, navigate,isNavigateHome) => {
 
         toast.success('Đăng nhập thành công');
 
-        navigate(-1);
+        navigate('/');
         Cookies.set('access_token', res.data.meta.token, {
             expires: 1,
             path: '/',

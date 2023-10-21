@@ -11,7 +11,7 @@ const cx = classNames.bind(styles);
 
 const DEFAULT_TYPE = 'following';
 const PAGE = 1;
-const PER_PAGE = 10;
+const PER_PAGE = 18;
 
 const Following = () => {
     const [contentData, setContentData] = useState([]);
@@ -41,8 +41,9 @@ const Following = () => {
             setLoading(true);
             async function getSuggestUser() {
                 try {
-                    const res = await userService.getSuggest({ page, prePage: PER_PAGE });
+                    const res = await userService.getSuggest({ page, perPage: PER_PAGE });
                     setSuggestData((prev) => [...prev, ...res?.data]);
+                    console.log(1);
                     setLoading(false);
                 } catch (err) {
                     console.log(err);
@@ -52,10 +53,10 @@ const Following = () => {
         }
     }, [page, isAuth]);
     const handleScroll = (() => {
-        console.log(window.scrollY)
+        
         if (window.scrollY + window.innerHeight >= document.body.offsetHeight) {
             setPage(page => page+ 1);
-            console.log(1);
+            
         }
         if (window.scrollY >= 100) {
             setHideBtn(false);
@@ -92,7 +93,7 @@ const Following = () => {
             ) : (
                 <div className={cx('container')}>
                     {contentData?.map((item, idx) => {
-                        return <FollowingContent muted={muted} volumeValue={volumeValue} key={idx} data={item} />;
+                        return <FollowingContent muted={muted} volumeValue={volumeValue} key={item.id} data={item} />;
                     })}
                 </div>
             )}
