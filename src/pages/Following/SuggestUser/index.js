@@ -76,7 +76,8 @@ const SuggestUser = ({ data, idx, index, setIndex }) => {
                                     Fragment
                                 )}
                             </h4>
-                            <Button onClick={() => {
+                            <Button onClick={(e) => {
+                                e.preventDefault();
                                 navigate('/login');
                             }} primary className={cx('button-following')}>
                                 {t('Follow')}

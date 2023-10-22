@@ -363,7 +363,7 @@ const Comment = () => {
                         <div className={cx('user-wrapper')}>
                             <img
                                 onClick={() => {
-                                    navigate(`@/${data.user?.nickname}`);
+                                    navigate(`/@${data.user?.nickname}`);
                                 }}
                                 ref={imgRef}
                                 src={data.user?.avatar}
@@ -374,7 +374,7 @@ const Comment = () => {
                             <div className={cx('info')}>
                                 <p
                                     onClick={() => {
-                                        navigate(`@/${data.user?.nickname}`);
+                                        navigate(`/@${data.user?.nickname}`);
                                     }}
                                     className={cx('nick-name')}
                                 >
