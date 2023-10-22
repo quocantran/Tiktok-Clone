@@ -15,14 +15,14 @@ import { useTranslation } from 'react-i18next';
 import CommentItem from './CommentItem';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
-import Loading from '../../components/Loading'
+import Loading from '../../components/Loading';
 const cx = classNames.bind(styles);
 
 const Comment = () => {
     const { id } = useParams();
-    
+
     const [data, setData] = useState({});
-    const [loading,setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const postBtn = useRef();
     const imgRef = useRef();
     const muted = useSelector((state) => state.volume.muted);
@@ -44,7 +44,7 @@ const Comment = () => {
     const videoPlayerRef = useRef();
     const nextBtn = useRef();
     const prevBtn = useRef();
-    const [isPrevBtn,setisPrevBtn] = useState();
+    const [isPrevBtn, setisPrevBtn] = useState();
     const [isFollowed, setIsFollowed] = useState(data.user?.is_followed);
     const handleLike = () => {
         if (!auth) {
@@ -156,34 +156,29 @@ const Comment = () => {
                 setLoading(false);
             })
             .catch(() => {
-                if(isPrevBtn){
-                    if(id < 3137){
+                if (isPrevBtn) {
+                    if (id < 3137) {
                         prevBtn.current.click();
-                    }
-                    else if(id < 0){
+                    } else if (id < 0) {
                         navigate('/');
-                    }
-                    else{
+                    } else {
                         navigate('/all/video/1');
                     }
-                }else{
-                    if(id < 3137){
+                } else {
+                    if (id < 3137) {
                         nextBtn.current.click();
-                    }
-                    else if(id < 0){
+                    } else if (id < 0) {
                         navigate('/');
-                    }
-                    else{
+                    } else {
                         navigate('/all/video/1');
                     }
                 }
-                
-                
             });
     }, [id]);
 
     useEffect(() => {
-        request
+        if(auth){
+            request
             .get(`/videos/${id}}/comments`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('access_token')}`,
@@ -193,7 +188,8 @@ const Comment = () => {
                 setCommentData(res.data.data);
             })
             .catch((err) => console.log());
-    }, [isMounted,id]);
+        }
+    }, [isMounted, id]);
 
     useEffect(() => {
         const video = videoRef.current;
@@ -239,7 +235,7 @@ const Comment = () => {
                 <div ref={videoPlayerRef} className={cx('video-player')}>
                     <div style={{ backgroundImage: `url(${data.thumb_url})` }} className={cx('video-background')}></div>
                     <div onClick={handleClick} className={cx('video-space')}>
-                        <img className={cx('thumb')} src={data.thumb_url}/>
+                        <img className={cx('thumb')} src={data.thumb_url} />
                         <video
                             ref={videoRef}
                             className={cx('video')}
@@ -248,7 +244,7 @@ const Comment = () => {
                             autoPlay
                             loop
                         ></video>
-                        {loading ? <Loading className = {cx('comment-video-loading')}/> : Fragment}
+                        {loading ? <Loading className={cx('comment-video-loading')} /> : Fragment}
                     </div>
                     <button
                         onClick={() => {
@@ -258,16 +254,24 @@ const Comment = () => {
                     >
                         <FontAwesomeIcon icon={faXmark} />
                     </button>
-                    <button ref={nextBtn} onClick={() => {
-                        setisPrevBtn(false);
-                        navigate(`/all/video/${Number(id) + 1}`);
-                    }} className={cx('next-btn')}>
+                    <button
+                        ref={nextBtn}
+                        onClick={() => {
+                            setisPrevBtn(false);
+                            navigate(`/all/video/${Number(id) + 1}`);
+                        }}
+                        className={cx('next-btn')}
+                    >
                         <FontAwesomeIcon icon={faChevronDown} />
                     </button>
-                    <button ref={prevBtn} onClick={() => {
-                        setisPrevBtn(true);
-                        navigate(`/all/video/${Number(id) - 1}`);
-                    }} className={cx('prev-btn')}>
+                    <button
+                        ref={prevBtn}
+                        onClick={() => {
+                            setisPrevBtn(true);
+                            navigate(`/all/video/${Number(id) - 1}`);
+                        }}
+                        className={cx('prev-btn')}
+                    >
                         <FontAwesomeIcon icon={faChevronUp} />
                     </button>
 

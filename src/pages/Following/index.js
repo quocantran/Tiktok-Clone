@@ -43,7 +43,7 @@ const Following = () => {
                 try {
                     const res = await userService.getSuggest({ page, perPage: PER_PAGE });
                     setSuggestData((prev) => [...prev, ...res?.data]);
-                    console.log(1);
+                    
                     setLoading(false);
                 } catch (err) {
                     console.log(err);
