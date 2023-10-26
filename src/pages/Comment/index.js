@@ -16,12 +16,26 @@ import CommentItem from './CommentItem';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import Loading from '../../components/Loading';
+import * as userService from '../../apiServices/userService'
 const cx = classNames.bind(styles);
+
 const TEMP_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90aWt0b2suZnVsbHN0YWNrLmVkdS52blwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY5ODMzNzU4MCwiZXhwIjoxNzAwOTI5NTgwLCJuYmYiOjE2OTgzMzc1ODAsImp0aSI6IlFwb0pOZHR6UUNJMWlzOUEiLCJzdWIiOjY0MDksInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.XFPPst36ljO4lpK4aJah8Js8VFSq_V8bpSJ_TplMByA'
 
-const Comment = () => {
-    const { id } = useParams();
+const MIN_PAGE = 1;
 
+const MAX_PAGE = 15;
+
+const DEFAULT_TYPE = 'for-you';
+
+const Comment = () => {
+    const max = MAX_PAGE;
+    const min = MIN_PAGE;
+    const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+    const [page,setPage] = useState(randomNum);
+    const { id } = useParams();
+    const [dataId,setDataId] = useState([]);
+    
+    const [index,setIndex] = useState(0);
     const [data, setData] = useState({});
     const [loading, setLoading] = useState(true);
     const postBtn = useRef();
@@ -45,8 +59,9 @@ const Comment = () => {
     const videoPlayerRef = useRef();
     const nextBtn = useRef();
     const prevBtn = useRef();
-    const [isPrevBtn, setisPrevBtn] = useState();
+    
     const [isFollowed, setIsFollowed] = useState(data.user?.is_followed);
+    
     const handleLike = () => {
         if (!auth) {
             navigate('/login');
@@ -145,6 +160,35 @@ const Comment = () => {
         setIsFollowed(data.user?.is_followed);
     }, [data.user?.is_followed]);
 
+    
+
+    useEffect(() => {
+        async function getDataVideoIds(){
+            try{
+                const res = await userService.getContent({type : DEFAULT_TYPE, page});
+                
+                res.data.forEach(data => {
+                    setDataId(prev => [...prev,data.id]);
+                })
+                
+            }
+            catch(err){
+                
+            }
+            
+        }
+        getDataVideoIds();
+    },[page]);
+
+    useEffect(() => {
+        console.log(dataId);
+        if(dataId[index] == dataId[dataId.length - 1]){
+            setPage(prev => prev + 1);
+        }
+    },[index]);
+
+
+
     useEffect(() => {
         request
             .get(`/videos/${id}`, {
@@ -159,24 +203,10 @@ const Comment = () => {
             .catch(() => {
                 if(id <=0 || id > 3137){
                     navigate('/all/video/1');
-                }else{
-                    if (isPrevBtn) {
-                        if (id < 3137) {
-                            prevBtn.current.click();
-                        }else {
-                            navigate('/all/video/1');
-                        }
-                    } else {
-                        if (id < 3137) {
-                            nextBtn.current.click();
-                        }else {
-                            navigate('/all/video/1');
-                        }
-                    }
                 }
                 
             });
-    }, [id]);
+    }, [index]);
 
     useEffect(() => {
         
@@ -230,7 +260,7 @@ const Comment = () => {
             videoRef.current.volume = volumeValue / 100;
         }
     });
-
+    
     return (
         <div className={cx('wrapper')}>
             <div className={cx('video-container')}>
@@ -259,23 +289,30 @@ const Comment = () => {
                     <button
                         ref={nextBtn}
                         onClick={() => {
-                            setisPrevBtn(false);
-                            navigate(`/all/video/${Number(id) + 1}`);
+                            
+                            setIndex(index + 1);
+                            if(dataId[index]){
+                                navigate(`/all/video/${dataId[index]}`);
+                            }
                         }}
                         className={cx('next-btn')}
                     >
                         <FontAwesomeIcon icon={faChevronDown} />
                     </button>
-                    <button
+                    {index === 0 ? Fragment :<button
                         ref={prevBtn}
                         onClick={() => {
-                            setisPrevBtn(true);
-                            navigate(`/all/video/${Number(id) - 1}`);
+                            
+                            setIndex(index - 1);
+                            if(dataId[index]){
+                                navigate(`/all/video/${dataId[index]}`);
+                            }
+                            
                         }}
                         className={cx('prev-btn')}
                     >
                         <FontAwesomeIcon icon={faChevronUp} />
-                    </button>
+                    </button>}
 
                     <div className={cx('progress-video')}>
                         <div className={cx('progress-video-player')}>
