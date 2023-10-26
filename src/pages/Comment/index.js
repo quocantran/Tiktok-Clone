@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import Loading from '../../components/Loading';
 const cx = classNames.bind(styles);
+const TEMP_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90aWt0b2suZnVsbHN0YWNrLmVkdS52blwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY5ODMzNzU4MCwiZXhwIjoxNzAwOTI5NTgwLCJuYmYiOjE2OTgzMzc1ODAsImp0aSI6IlFwb0pOZHR6UUNJMWlzOUEiLCJzdWIiOjY0MDksInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.XFPPst36ljO4lpK4aJah8Js8VFSq_V8bpSJ_TplMByA'
 
 const Comment = () => {
     const { id } = useParams();
@@ -156,39 +157,40 @@ const Comment = () => {
                 setLoading(false);
             })
             .catch(() => {
-                if (isPrevBtn) {
-                    if (id < 3137) {
-                        prevBtn.current.click();
-                    } else if (id < 0) {
-                        navigate('/');
+                if(id <=0 || id > 3137){
+                    navigate('/all/video/1');
+                }else{
+                    if (isPrevBtn) {
+                        if (id < 3137) {
+                            prevBtn.current.click();
+                        }else {
+                            navigate('/all/video/1');
+                        }
                     } else {
-                        navigate('/all/video/1');
-                    }
-                } else {
-                    if (id < 3137) {
-                        nextBtn.current.click();
-                    } else if (id < 0) {
-                        navigate('/');
-                    } else {
-                        navigate('/all/video/1');
+                        if (id < 3137) {
+                            nextBtn.current.click();
+                        }else {
+                            navigate('/all/video/1');
+                        }
                     }
                 }
+                
             });
     }, [id]);
 
     useEffect(() => {
-        if(auth){
-            request
-            .get(`/videos/${id}}/comments`, {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get('access_token')}`,
-                },
-            })
-            .then((res) => {
-                setCommentData(res.data.data);
-            })
-            .catch((err) => console.log());
-        }
+        
+        request
+        .get(`/videos/${id}}/comments`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get('access_token') || TEMP_TOKEN}`,
+            },
+        })
+        .then((res) => {
+            setCommentData(res.data.data);
+        })
+        .catch((err) => console.log());
+        
     }, [isMounted, id]);
 
     useEffect(() => {

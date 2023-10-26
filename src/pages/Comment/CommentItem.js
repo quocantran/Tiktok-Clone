@@ -7,6 +7,8 @@ import request from '../../ultis/request';
 import Cookies from 'js-cookie';
 
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 const cx = classNames.bind(styles);
 
 const CommentItem = ({ data }) => {
@@ -14,8 +16,13 @@ const CommentItem = ({ data }) => {
     const [dataComment, setData] = useState(data);
     const [like, setLike] = useState(dataComment.is_liked);
     const navigate = useNavigate();
-
+    const auth = useSelector(state => state.auth.login.success);
     const handleClick = () => {
+        if(!auth){
+            navigate('/login');
+            toast.error('Vui lòng đăng nhập!');
+            return;
+        }
         setLike(!like);
 
         if (!like) {
