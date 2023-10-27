@@ -33,7 +33,7 @@ const Comment = () => {
     const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
     const [page,setPage] = useState(randomNum);
     const { id } = useParams();
-    const [dataId,setDataId] = useState([]);
+    const [dataId,setDataId] = useState([Number(id)]);
     
     const [index,setIndex] = useState(0);
     const [data, setData] = useState({});
@@ -57,8 +57,7 @@ const Comment = () => {
     const [like, setLike] = useState(data.is_liked);
     const auth = useSelector((state) => state.auth.login.success);
     const videoPlayerRef = useRef();
-    const nextBtn = useRef();
-    const prevBtn = useRef();
+    
     
     const [isFollowed, setIsFollowed] = useState(data.user?.is_followed);
     
@@ -181,7 +180,7 @@ const Comment = () => {
     },[page]);
 
     useEffect(() => {
-        console.log(dataId);
+        
         if(dataId[index] == dataId[dataId.length - 1]){
             setPage(prev => prev + 1);
         }
@@ -287,26 +286,32 @@ const Comment = () => {
                         <FontAwesomeIcon icon={faXmark} />
                     </button>
                     <button
-                        ref={nextBtn}
+                        
                         onClick={() => {
                             
-                            setIndex(index + 1);
+                            
+                            
                             if(dataId[index]){
-                                navigate(`/all/video/${dataId[index]}`);
+                                let idxNext = index + 1;
+                                navigate(`/all/video/${dataId[idxNext]}`);
                             }
+                            setIndex(prev => prev + 1);
                         }}
                         className={cx('next-btn')}
                     >
                         <FontAwesomeIcon icon={faChevronDown} />
                     </button>
-                    {index === 0 ? Fragment :<button
-                        ref={prevBtn}
+                    {index <= 0 ? Fragment :<button
+                        
                         onClick={() => {
                             
-                            setIndex(index - 1);
+                            
+                            
                             if(dataId[index]){
-                                navigate(`/all/video/${dataId[index]}`);
+                                let idxPrev = index - 1;
+                                navigate(`/all/video/${dataId[idxPrev]}`);
                             }
+                            setIndex(prev => prev - 1);
                             
                         }}
                         className={cx('prev-btn')}
