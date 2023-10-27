@@ -1,3 +1,4 @@
+import React from 'react';
 import classNames from 'classnames/bind';
 import styles from './Comment.module.scss';
 import { useNavigate } from 'react-router-dom';
@@ -16,10 +17,13 @@ import CommentItem from './CommentItem';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import Loading from '../../components/Loading';
-import * as userService from '../../apiServices/userService'
+import * as userService from '../../apiServices/userService';
+import { useSwipeable } from 'react-swipeable';
+
 const cx = classNames.bind(styles);
 
-const TEMP_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90aWt0b2suZnVsbHN0YWNrLmVkdS52blwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY5ODMzNzU4MCwiZXhwIjoxNzAwOTI5NTgwLCJuYmYiOjE2OTgzMzc1ODAsImp0aSI6IlFwb0pOZHR6UUNJMWlzOUEiLCJzdWIiOjY0MDksInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.XFPPst36ljO4lpK4aJah8Js8VFSq_V8bpSJ_TplMByA'
+const TEMP_TOKEN =
+    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90aWt0b2suZnVsbHN0YWNrLmVkdS52blwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY5ODMzNzU4MCwiZXhwIjoxNzAwOTI5NTgwLCJuYmYiOjE2OTgzMzc1ODAsImp0aSI6IlFwb0pOZHR6UUNJMWlzOUEiLCJzdWIiOjY0MDksInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.XFPPst36ljO4lpK4aJah8Js8VFSq_V8bpSJ_TplMByA';
 
 const MIN_PAGE = 1;
 
@@ -31,11 +35,12 @@ const Comment = () => {
     const max = MAX_PAGE;
     const min = MIN_PAGE;
     const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
-    const [page,setPage] = useState(randomNum);
+    const [page, setPage] = useState(randomNum);
     const { id } = useParams();
-    const [dataId,setDataId] = useState([Number(id)]);
-    
-    const [index,setIndex] = useState(0);
+    const [dataId, setDataId] = useState([Number(id)]);
+    const nextBtn = useRef();
+    const prevBtn = useRef();
+    const [index, setIndex] = useState(0);
     const [data, setData] = useState({});
     const [loading, setLoading] = useState(true);
     const postBtn = useRef();
@@ -57,10 +62,21 @@ const Comment = () => {
     const [like, setLike] = useState(data.is_liked);
     const auth = useSelector((state) => state.auth.login.success);
     const videoPlayerRef = useRef();
-    
-    
+
     const [isFollowed, setIsFollowed] = useState(data.user?.is_followed);
-    
+
+    const handlers = useSwipeable({
+        onSwiped: (eventData) => {
+          if (eventData.dir === 'Up') {
+            
+            nextBtn.current.click();
+          } else if (eventData.dir === 'Down' && index > 0) {
+            
+            prevBtn.current.click();
+          }
+        }
+      });
+
     const handleLike = () => {
         if (!auth) {
             navigate('/login');
@@ -159,34 +175,24 @@ const Comment = () => {
         setIsFollowed(data.user?.is_followed);
     }, [data.user?.is_followed]);
 
-    
-
     useEffect(() => {
-        async function getDataVideoIds(){
-            try{
-                const res = await userService.getContent({type : DEFAULT_TYPE, page});
-                
-                res.data.forEach(data => {
-                    setDataId(prev => [...prev,data.id]);
-                })
-                
-            }
-            catch(err){
-                
-            }
-            
+        async function getDataVideoIds() {
+            try {
+                const res = await userService.getContent({ type: DEFAULT_TYPE, page });
+
+                res.data.forEach((data) => {
+                    setDataId((prev) => [...prev, data.id]);
+                });
+            } catch (err) {}
         }
         getDataVideoIds();
-    },[page]);
+    }, [page]);
 
     useEffect(() => {
-        
-        if(dataId[index] == dataId[dataId.length - 1]){
-            setPage(prev => prev + 1);
+        if (dataId[index] == dataId[dataId.length - 1]) {
+            setPage((prev) => prev + 1);
         }
-    },[index]);
-
-
+    }, [index]);
 
     useEffect(() => {
         request
@@ -200,26 +206,23 @@ const Comment = () => {
                 setLoading(false);
             })
             .catch(() => {
-                if(id <=0 || id > 3137){
+                if (id <= 0 || id > 3137) {
                     navigate('/all/video/1');
                 }
-                
             });
     }, [index]);
 
     useEffect(() => {
-        
         request
-        .get(`/videos/${id}}/comments`, {
-            headers: {
-                Authorization: `Bearer ${Cookies.get('access_token') || TEMP_TOKEN}`,
-            },
-        })
-        .then((res) => {
-            setCommentData(res.data.data);
-        })
-        .catch((err) => console.log());
-        
+            .get(`/videos/${id}}/comments`, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('access_token') || TEMP_TOKEN}`,
+                },
+            })
+            .then((res) => {
+                setCommentData(res.data.data);
+            })
+            .catch((err) => console.log());
     }, [isMounted, id]);
 
     useEffect(() => {
@@ -259,148 +262,150 @@ const Comment = () => {
             videoRef.current.volume = volumeValue / 100;
         }
     });
-    
+
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('video-container')}>
-                <div ref={videoPlayerRef} className={cx('video-player')}>
-                    <div style={{ backgroundImage: `url(${data.thumb_url})` }} className={cx('video-background')}></div>
-                    <div onClick={handleClick} className={cx('video-space')}>
-                        <img className={cx('thumb')} src={data.thumb_url} />
-                        <video
-                            ref={videoRef}
-                            className={cx('video')}
-                            src={data.file_url}
-                            muted={muted}
-                            autoPlay
-                            loop
-                        ></video>
-                        {loading ? <Loading className={cx('comment-video-loading')} /> : Fragment}
-                    </div>
-                    <button
-                        onClick={() => {
-                            navigate('/');
-                        }}
-                        className={cx('close-btn')}
-                    >
-                        <FontAwesomeIcon icon={faXmark} />
-                    </button>
-                    <button
-                        
-                        onClick={() => {
-                            
-                            
-                            
-                            if(dataId[index]){
-                                let idxNext = index + 1;
-                                navigate(`/all/video/${dataId[idxNext]}`);
-                            }
-                            setIndex(prev => prev + 1);
-                        }}
-                        className={cx('next-btn')}
-                    >
-                        <FontAwesomeIcon icon={faChevronDown} />
-                    </button>
-                    {index <= 0 ? Fragment :<button
-                        
-                        onClick={() => {
-                            
-                            
-                            
-                            if(dataId[index]){
-                                let idxPrev = index - 1;
-                                navigate(`/all/video/${dataId[idxPrev]}`);
-                            }
-                            setIndex(prev => prev - 1);
-                            
-                        }}
-                        className={cx('prev-btn')}
-                    >
-                        <FontAwesomeIcon icon={faChevronUp} />
-                    </button>}
-
-                    <div className={cx('progress-video')}>
-                        <div className={cx('progress-video-player')}>
-                            <div className={cx('progress-bar')}>
-                                <div className={cx('progress-dot')}></div>
-                            </div>
-                            <input onChange={handleChangeProgress} type="range" min="0" max="100" step="1" />
+            
+                <div className={cx('video-container')} {...handlers}>
+                    <div ref={videoPlayerRef} className={cx('video-player')}>
+                        <div
+                            style={{ backgroundImage: `url(${data.thumb_url})` }}
+                            className={cx('video-background')}
+                        ></div>
+                        <div onClick={handleClick} className={cx('video-space')}>
+                            <img className={cx('thumb')} src={data.thumb_url} />
+                            <video
+                                ref={videoRef}
+                                className={cx('video')}
+                                src={data.file_url}
+                                muted={muted}
+                                autoPlay
+                                loop
+                            ></video>
+                            {loading ? <Loading className={cx('comment-video-loading')} /> : Fragment}
                         </div>
-                        <div className={cx('time-video')}>
-                            <span>{formatTime(currentTime)}/</span>
-
-                            <span>{formatTime(duration)}</span>
-                        </div>
-                    </div>
-
-                    {play ? (
-                        Fragment
-                    ) : (
-                        <span className={cx('play-video')}>
-                            <img src={svg.playVideo} alt="icon" />
-                        </span>
-                    )}
-
-                    {muted ? (
-                        <div className={cx('volume-content')}>
-                            <div className={cx('volume-control')}>
-                                <input
-                                    onChange={(e) => {
-                                        dispatch(changeVolume(e.target.value));
-
-                                        if (e.target.value > 0) {
-                                            dispatch(changeMuted(false));
-                                            videoRef.current.volume = volumeValue / 100;
-                                        } else {
-                                            dispatch(changeMuted(true));
-                                            videoRef.current.volume = 0;
-                                        }
-                                    }}
-                                    className={cx('progress')}
-                                    value={volumeValue}
-                                    type="range"
-                                    min="0"
-                                    max="100"
-                                    step="1"
-                                />
-                                <div style={{ padding: '4px' }}></div>
-                            </div>
-                            <button onClick={handleChangeVolume} className={cx('volume-btn')}>
-                                <img src={svg.muted} alt="icon" />
+                        <button
+                            onClick={() => {
+                                navigate('/');
+                            }}
+                            className={cx('close-btn')}
+                        >
+                            <FontAwesomeIcon icon={faXmark} />
+                        </button>
+                        <button
+                            ref={nextBtn}
+                            onClick={() => {
+                                if (dataId[index]) {
+                                    let idxNext = index + 1;
+                                    navigate(`/all/video/${dataId[idxNext]}`);
+                                }
+                                setIndex((prev) => prev + 1);
+                            }}
+                            className={cx('next-btn')}
+                        >
+                            <FontAwesomeIcon icon={faChevronDown} />
+                        </button>
+                        {index <= 0 ? (
+                            Fragment
+                        ) : (
+                            <button
+                                ref={prevBtn}
+                                onClick={() => {
+                                    if (dataId[index]) {
+                                        let idxPrev = index - 1;
+                                        navigate(`/all/video/${dataId[idxPrev]}`);
+                                    }
+                                    setIndex((prev) => prev - 1);
+                                }}
+                                className={cx('prev-btn')}
+                            >
+                                <FontAwesomeIcon icon={faChevronUp} />
                             </button>
-                        </div>
-                    ) : (
-                        <div className={cx('volume-content')}>
-                            <div className={cx('volume-control')}>
-                                <input
-                                    onChange={(e) => {
-                                        dispatch(changeVolume(e.target.value));
+                        )}
 
-                                        if (e.target.value > 0) {
-                                            dispatch(changeMuted(false));
-                                            videoRef.current.volume = volumeValue / 100;
-                                        } else {
-                                            dispatch(changeMuted(true));
-                                            videoRef.current.volume = 0;
-                                        }
-                                    }}
-                                    className={cx('progress')}
-                                    value={volumeValue}
-                                    type="range"
-                                    min="0"
-                                    max="100"
-                                    step="1"
-                                />
-                                <div style={{ padding: '4px' }}></div>
+                        <div className={cx('progress-video')}>
+                            <div className={cx('progress-video-player')}>
+                                <div className={cx('progress-bar')}>
+                                    <div className={cx('progress-dot')}></div>
+                                </div>
+                                <input onChange={handleChangeProgress} type="range" min="0" max="100" step="1" />
                             </div>
+                            <div className={cx('time-video')}>
+                                <span>{formatTime(currentTime)}/</span>
 
-                            <button onClick={handleChangeVolume} className={cx('volume-btn')}>
-                                <img src={svg.volume} alt="icon" />
-                            </button>
+                                <span>{formatTime(duration)}</span>
+                            </div>
                         </div>
-                    )}
+
+                        {play ? (
+                            Fragment
+                        ) : (
+                            <span className={cx('play-video')}>
+                                <img src={svg.playVideo} alt="icon" />
+                            </span>
+                        )}
+
+                        {muted ? (
+                            <div className={cx('volume-content')}>
+                                <div className={cx('volume-control')}>
+                                    <input
+                                        onChange={(e) => {
+                                            dispatch(changeVolume(e.target.value));
+
+                                            if (e.target.value > 0) {
+                                                dispatch(changeMuted(false));
+                                                videoRef.current.volume = volumeValue / 100;
+                                            } else {
+                                                dispatch(changeMuted(true));
+                                                videoRef.current.volume = 0;
+                                            }
+                                        }}
+                                        className={cx('progress')}
+                                        value={volumeValue}
+                                        type="range"
+                                        min="0"
+                                        max="100"
+                                        step="1"
+                                    />
+                                    <div style={{ padding: '4px' }}></div>
+                                </div>
+                                <button onClick={handleChangeVolume} className={cx('volume-btn')}>
+                                    <img src={svg.muted} alt="icon" />
+                                </button>
+                            </div>
+                        ) : (
+                            <div className={cx('volume-content')}>
+                                <div className={cx('volume-control')}>
+                                    <input
+                                        onChange={(e) => {
+                                            dispatch(changeVolume(e.target.value));
+
+                                            if (e.target.value > 0) {
+                                                dispatch(changeMuted(false));
+                                                videoRef.current.volume = volumeValue / 100;
+                                            } else {
+                                                dispatch(changeMuted(true));
+                                                videoRef.current.volume = 0;
+                                            }
+                                        }}
+                                        className={cx('progress')}
+                                        value={volumeValue}
+                                        type="range"
+                                        min="0"
+                                        max="100"
+                                        step="1"
+                                    />
+                                    <div style={{ padding: '4px' }}></div>
+                                </div>
+
+                                <button onClick={handleChangeVolume} className={cx('volume-btn')}>
+                                    <img src={svg.volume} alt="icon" />
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </div>
+            
             <div className={cx('comment-container')}>
                 <div className={cx('comment-header')}>
                     <header className={cx('user-info')}>
