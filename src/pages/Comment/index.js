@@ -62,20 +62,19 @@ const Comment = () => {
     const [like, setLike] = useState(data.is_liked);
     const auth = useSelector((state) => state.auth.login.success);
     const videoPlayerRef = useRef();
+    const imgAvatar = useRef();
 
     const [isFollowed, setIsFollowed] = useState(data.user?.is_followed);
 
     const handlers = useSwipeable({
         onSwiped: (eventData) => {
-          if (eventData.dir === 'Up') {
-            
-            nextBtn.current.click();
-          } else if (eventData.dir === 'Down' && index > 0) {
-            
-            prevBtn.current.click();
-          }
-        }
-      });
+            if (eventData.dir === 'Up') {
+                nextBtn.current.click();
+            } else if (eventData.dir === 'Down' && index > 0) {
+                prevBtn.current.click();
+            }
+        },
+    });
 
     const handleLike = () => {
         if (!auth) {
@@ -166,7 +165,7 @@ const Comment = () => {
 
     useEffect(() => {
         setLike(data.is_liked);
-    }, [data.is_liked]);
+    }, [data.is_liked, index]);
     useEffect(() => {
         setPlay(true);
     }, [id]);
@@ -195,6 +194,7 @@ const Comment = () => {
     }, [index]);
 
     useEffect(() => {
+        setLoading(true);
         request
             .get(`/videos/${id}`, {
                 headers: {
@@ -265,147 +265,181 @@ const Comment = () => {
 
     return (
         <div className={cx('wrapper')}>
-            
-                <div className={cx('video-container')} {...handlers}>
-                    <div ref={videoPlayerRef} className={cx('video-player')}>
-                        <div
-                            style={{ backgroundImage: `url(${data.thumb_url})` }}
-                            className={cx('video-background')}
-                        ></div>
-                        <div onClick={handleClick} className={cx('video-space')}>
-                            <img className={cx('thumb')} src={data.thumb_url} />
-                            <video
-                                ref={videoRef}
-                                className={cx('video')}
-                                src={data.file_url}
-                                muted={muted}
-                                autoPlay
-                                loop
-                            ></video>
-                            {loading ? <Loading className={cx('comment-video-loading')} /> : Fragment}
-                        </div>
+            <div className={cx('video-container')} {...handlers}>
+                <div ref={videoPlayerRef} className={cx('video-player')}>
+                    <div style={{ backgroundImage: `url(${data.thumb_url})` }} className={cx('video-background')}></div>
+                    <div onClick={handleClick} className={cx('video-space')}>
+                        <img className={cx('thumb')} src={data.thumb_url} />
+                        <video
+                            ref={videoRef}
+                            className={cx('video')}
+                            src={data.file_url}
+                            muted={muted}
+                            autoPlay
+                            loop
+                        ></video>
+                        {loading ? <Loading className={cx('comment-video-loading')} /> : Fragment}
+                    </div>
+                    <button
+                        onClick={() => {
+                            navigate('/');
+                        }}
+                        className={cx('close-btn')}
+                    >
+                        <FontAwesomeIcon icon={faXmark} />
+                    </button>
+                    <button
+                        ref={nextBtn}
+                        onClick={() => {
+                            if (dataId[index]) {
+                                let idxNext = index + 1;
+                                navigate(`/all/video/${dataId[idxNext]}`);
+                            }
+                            setIndex((prev) => prev + 1);
+                        }}
+                        className={cx('next-btn')}
+                    >
+                        <FontAwesomeIcon icon={faChevronDown} />
+                    </button>
+                    {index <= 0 ? (
+                        Fragment
+                    ) : (
                         <button
-                            onClick={() => {
-                                navigate('/');
-                            }}
-                            className={cx('close-btn')}
-                        >
-                            <FontAwesomeIcon icon={faXmark} />
-                        </button>
-                        <button
-                            ref={nextBtn}
+                            ref={prevBtn}
                             onClick={() => {
                                 if (dataId[index]) {
-                                    let idxNext = index + 1;
-                                    navigate(`/all/video/${dataId[idxNext]}`);
+                                    let idxPrev = index - 1;
+                                    navigate(`/all/video/${dataId[idxPrev]}`);
                                 }
-                                setIndex((prev) => prev + 1);
+                                setIndex((prev) => prev - 1);
                             }}
-                            className={cx('next-btn')}
+                            className={cx('prev-btn')}
                         >
-                            <FontAwesomeIcon icon={faChevronDown} />
+                            <FontAwesomeIcon icon={faChevronUp} />
                         </button>
-                        {index <= 0 ? (
-                            Fragment
-                        ) : (
-                            <button
-                                ref={prevBtn}
-                                onClick={() => {
-                                    if (dataId[index]) {
-                                        let idxPrev = index - 1;
-                                        navigate(`/all/video/${dataId[idxPrev]}`);
-                                    }
-                                    setIndex((prev) => prev - 1);
-                                }}
-                                className={cx('prev-btn')}
-                            >
-                                <FontAwesomeIcon icon={faChevronUp} />
-                            </button>
-                        )}
+                    )}
 
-                        <div className={cx('progress-video')}>
-                            <div className={cx('progress-video-player')}>
-                                <div className={cx('progress-bar')}>
-                                    <div className={cx('progress-dot')}></div>
-                                </div>
-                                <input onChange={handleChangeProgress} type="range" min="0" max="100" step="1" />
+                    <div className={cx('progress-video')}>
+                        <div className={cx('progress-video-player')}>
+                            <div className={cx('progress-bar')}>
+                                <div className={cx('progress-dot')}></div>
                             </div>
-                            <div className={cx('time-video')}>
-                                <span>{formatTime(currentTime)}/</span>
-
-                                <span>{formatTime(duration)}</span>
-                            </div>
+                            <input onChange={handleChangeProgress} type="range" min="0" max="100" step="1" />
                         </div>
+                        <div className={cx('time-video')}>
+                            <span>{formatTime(currentTime)}/</span>
 
-                        {play ? (
-                            Fragment
-                        ) : (
-                            <span className={cx('play-video')}>
-                                <img src={svg.playVideo} alt="icon" />
-                            </span>
-                        )}
+                            <span>{formatTime(duration)}</span>
+                        </div>
+                    </div>
 
-                        {muted ? (
-                            <div className={cx('volume-content')}>
-                                <div className={cx('volume-control')}>
-                                    <input
-                                        onChange={(e) => {
-                                            dispatch(changeVolume(e.target.value));
+                    {play ? (
+                        Fragment
+                    ) : (
+                        <span className={cx('play-video')}>
+                            <img src={svg.playVideo} alt="icon" />
+                        </span>
+                    )}
 
-                                            if (e.target.value > 0) {
-                                                dispatch(changeMuted(false));
-                                                videoRef.current.volume = volumeValue / 100;
-                                            } else {
-                                                dispatch(changeMuted(true));
-                                                videoRef.current.volume = 0;
-                                            }
-                                        }}
-                                        className={cx('progress')}
-                                        value={volumeValue}
-                                        type="range"
-                                        min="0"
-                                        max="100"
-                                        step="1"
-                                    />
-                                    <div style={{ padding: '4px' }}></div>
-                                </div>
-                                <button onClick={handleChangeVolume} className={cx('volume-btn')}>
-                                    <img src={svg.muted} alt="icon" />
-                                </button>
+                    {muted ? (
+                        <div className={cx('volume-content')}>
+                            <div className={cx('volume-control')}>
+                                <input
+                                    onChange={(e) => {
+                                        dispatch(changeVolume(e.target.value));
+
+                                        if (e.target.value > 0) {
+                                            dispatch(changeMuted(false));
+                                            videoRef.current.volume = volumeValue / 100;
+                                        } else {
+                                            dispatch(changeMuted(true));
+                                            videoRef.current.volume = 0;
+                                        }
+                                    }}
+                                    className={cx('progress')}
+                                    value={volumeValue}
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    step="1"
+                                />
+                                <div style={{ padding: '4px' }}></div>
                             </div>
-                        ) : (
-                            <div className={cx('volume-content')}>
-                                <div className={cx('volume-control')}>
-                                    <input
-                                        onChange={(e) => {
-                                            dispatch(changeVolume(e.target.value));
+                            <button onClick={handleChangeVolume} className={cx('volume-btn')}>
+                                <img src={svg.muted} alt="icon" />
+                            </button>
+                        </div>
+                    ) : (
+                        <div className={cx('volume-content')}>
+                            <div className={cx('volume-control')}>
+                                <input
+                                    onChange={(e) => {
+                                        dispatch(changeVolume(e.target.value));
 
-                                            if (e.target.value > 0) {
-                                                dispatch(changeMuted(false));
-                                                videoRef.current.volume = volumeValue / 100;
-                                            } else {
-                                                dispatch(changeMuted(true));
-                                                videoRef.current.volume = 0;
-                                            }
-                                        }}
-                                        className={cx('progress')}
-                                        value={volumeValue}
-                                        type="range"
-                                        min="0"
-                                        max="100"
-                                        step="1"
-                                    />
-                                    <div style={{ padding: '4px' }}></div>
-                                </div>
-
-                                <button onClick={handleChangeVolume} className={cx('volume-btn')}>
-                                    <img src={svg.volume} alt="icon" />
-                                </button>
+                                        if (e.target.value > 0) {
+                                            dispatch(changeMuted(false));
+                                            videoRef.current.volume = volumeValue / 100;
+                                        } else {
+                                            dispatch(changeMuted(true));
+                                            videoRef.current.volume = 0;
+                                        }
+                                    }}
+                                    className={cx('progress')}
+                                    value={volumeValue}
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    step="1"
+                                />
+                                <div style={{ padding: '4px' }}></div>
                             </div>
-                        )}
+
+                            <button onClick={handleChangeVolume} className={cx('volume-btn')}>
+                                <img src={svg.volume} alt="icon" />
+                            </button>
+                        </div>
+                    )}
+
+                    <div className={cx('avatar-video')}>
+                        <img
+                            onClick={() => {
+                                navigate(`/@${data.user?.nickname}`);
+                            }}
+                            ref={imgAvatar}
+                            src={data.user?.avatar}
+                            alt="avatar"
+                            onError={() => {
+                                imgAvatar.current.src = noImage;
+                            }}
+                        />
+                    </div>
+                    <div onClick={handleLike} className={cx('heart-video')}>
+                        {like ? <img src={svg.heartActive} alt="icon" /> : <img src={svg.heartLight} alt="icon" />}
+                        <span className="like-count-video">{data.likes_count}</span>
+                    </div>
+                    <div className={cx('comment-video')}>
+                        <img src={svg.commentLight} alt="icon" />
+                        <span className="like-count-video">{data.comments_count}</span>
+                    </div>
+
+                    <div className={cx('info-video')}>
+                        <div
+                            onClick={() => {
+                                navigate(`/@${data.user?.nickname}`);
+                            }}
+                            className={cx('nick-name-video')}
+                        >
+                            <strong>{data.user?.nickname}</strong>
+                        </div>
+                        <span className={cx('description-video')}>{data.description}</span>
+                        <div className={cx('music-video')}>
+                            <img src={svg.musicLight} alt="icon" />
+                            <span>{data.music ? data.music : 'Âm thanh trong video!'}</span>
+                        </div>
                     </div>
                 </div>
-            
+            </div>
+
             <div className={cx('comment-container')}>
                 <div className={cx('comment-header')}>
                     <header className={cx('user-info')}>
