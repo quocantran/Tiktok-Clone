@@ -51,7 +51,9 @@ const svg = {
     profile : require('../svg/profile.svg').default,
     profileLight : require('../svg/profileLight.svg').default,
     lock : require('../svg/lock.svg').default,
-    lockLight : require('../svg/lockLight.svg').default
+    lockLight : require('../svg/lockLight.svg').default,
+    followMobile : require('../svg/followMobile.svg').default,
+    
 
     
 }

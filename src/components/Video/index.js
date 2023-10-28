@@ -341,7 +341,7 @@ const Video = ({ data, muted, followed,isLike, volumeValue }) => {
                             <button className={cx('interact-btn')}>
                                 {dark ? <img src={svg.shareLight} alt="icon" /> : <img src={svg.share} alt="icon" />}
                             </button>
-                            <strong>Share</strong>
+                            <strong>{t('Share')}</strong>
                         </span>
                     </div>
                 </div>

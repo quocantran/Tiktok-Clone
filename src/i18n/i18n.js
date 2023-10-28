@@ -28,6 +28,7 @@ i18n.use(initReactI18next).init({
         'Follow' : 'Follow',
         'Post' : 'Post',
         'Comments' : 'Comments',
+        'Share' : 'Share',
       },
     },
     vi: {
@@ -55,6 +56,7 @@ i18n.use(initReactI18next).init({
         'Following' : 'Đang theo dõi',
         'Post' : 'Đăng',
         'Comments' : 'Viết gì đó',
+        'Share' : 'Chia sẻ'
       },
     },
   },

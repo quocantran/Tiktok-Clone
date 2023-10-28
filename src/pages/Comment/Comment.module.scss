@@ -275,7 +275,7 @@
 
 .avatar-video {
     position: absolute;
-    top: 50%;
+    top: 47%;
     right: 10px;
     display: none;
     z-index: 10;
@@ -284,7 +284,6 @@
         height: 44px;
         width: 44px;
         border-radius: 50%;
-        
     }
 }
 
@@ -295,7 +294,7 @@
 .heart-video {
     display: none;
     position: absolute;
-    top: 59%;
+    top: 56%;
     right: 10px;
     z-index: 10;
     display: none;
@@ -315,8 +314,8 @@
 }
 .comment-video {
     position: absolute;
-    top: 67%;
-    right: 10px;
+    top: 64%;
+    right: 11px;
     z-index: 10;
     display: none;
     flex-direction: column;
@@ -332,6 +331,30 @@
         font-weight: 600;
         color: rgb(255, 255, 255);
     }
+}
+.share-video-icon {
+    position: absolute;
+    top: 71%;
+    right: 11px;
+    z-index: 10;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 45px;
+    img {
+        width: 32px;
+        height: 32px;
+    }
+    span {
+        font-size: 13px;
+        line-height: 17px;
+        font-weight: 600;
+        color: rgb(255, 255, 255);
+    }
+}
+
+.follow-video-icon {
+    display: none;
 }
 
 .coppy-link {
@@ -608,6 +631,10 @@
     padding: 8px 16px;
 }
 
+.comment-mobile {
+    display: none;
+}
+
 @media (max-width: 768px) {
     *:active {
         -webkit-tap-highlight-color: transparent;
@@ -657,19 +684,122 @@
             margin-bottom: 8px;
             font-size: 15px;
             display: -webkit-box;
-            -webkit-line-clamp: 2; /* Số dòng tối đa bạn muốn hiển thị */
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        .music-video{
+        .music-video {
             font-size: 15px;
 
             display: flex;
             align-items: center;
             justify-self: center;
-            img{
+            img {
                 margin-right: 8px;
             }
+            span {
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
         }
+    }
+    .share-video-icon {
+        display: flex;
+        img {
+            margin-left: 7px;
+        }
+    }
+    .follow-video-icon {
+        display: block;
+        position: absolute;
+        top: 52%;
+        right: 20px;
+        z-index: 10;
+        svg {
+            color: #fff;
+            width: 19px;
+            height: 19px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            margin-right: 2px;
+        }
+    }
+
+    .comment-container {
+        display: none;
+    }
+    .comment-mobile {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 8px;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+    }
+    .comment-mobile-container {
+        height: 417.55px;
+        position: fixed;
+        z-index: 9999;
+        bottom: 0;
+        width: 100%;
+        background-color: #fff;
+        border-radius: 12px 12px 0px 0px;
+        transition: all 0.3s ease;
+        header {
+            color: rgb(22, 24, 35);
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 17px;
+            height: 40px;
+            display: flex;
+            -webkit-box-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            align-items: center;
+            text-align: center;
+            flex-shrink: 0;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+        }
+
+        .close-icon-mobile {
+            position: absolute;
+            right: 16px;
+            top: 9px;
+            z-index: 9999;
+            svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+    }
+    .comment-items-mobile {
+        overflow: auto;
+        padding: 10px 16px;
+        text-align: center;
+        height: calc(73vh - 40px);
+        margin-top: 40px;
+    }
+    .comment-user{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .post-comment{
+        position: absolute;
+        height: 55px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+    .post-wrapper{
+        padding: 8px 12px;
     }
 }

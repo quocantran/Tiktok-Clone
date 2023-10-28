@@ -3,7 +3,14 @@ import classNames from 'classnames/bind';
 import styles from './Comment.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronUp, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {
+    faCheckCircle,
+    faChevronDown,
+    faChevronUp,
+    faCircleCheck,
+    faClose,
+    faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import svg from '../../assests/svg';
 import { Fragment, useEffect, useRef, useState } from 'react';
@@ -62,6 +69,7 @@ const Comment = () => {
     const [like, setLike] = useState(data.is_liked);
     const auth = useSelector((state) => state.auth.login.success);
     const videoPlayerRef = useRef();
+    const [closeModal, setCloseModal] = useState(true);
     const imgAvatar = useRef();
 
     const [isFollowed, setIsFollowed] = useState(data.user?.is_followed);
@@ -418,8 +426,27 @@ const Comment = () => {
                         <span className="like-count-video">{data.likes_count}</span>
                     </div>
                     <div className={cx('comment-video')}>
-                        <img src={svg.commentLight} alt="icon" />
+                        <img
+                            onClick={() => {
+                                setCloseModal(false);
+                            }}
+                            src={svg.commentLight}
+                            alt="icon"
+                        />
                         <span className="like-count-video">{data.comments_count}</span>
+                    </div>
+
+                    <div className={cx('share-video-icon')}>
+                        <img src={svg.shareLight} alt="icon" />
+                        <span>{t('Share')}</span>
+                    </div>
+
+                    <div className={cx('follow-video-icon')}>
+                        {isFollowed ? (
+                            <FontAwesomeIcon onClick={handleFollow} icon={faCircleCheck} />
+                        ) : (
+                            <img onClick={handleFollow} src={svg.followMobile} alt="icon" />
+                        )}
                     </div>
 
                     <div className={cx('info-video')}>
@@ -432,6 +459,7 @@ const Comment = () => {
                             <strong>{data.user?.nickname}</strong>
                         </div>
                         <span className={cx('description-video')}>{data.description}</span>
+
                         <div className={cx('music-video')}>
                             <img src={svg.musicLight} alt="icon" />
                             <span>{data.music ? data.music : 'Âm thanh trong video!'}</span>
@@ -639,6 +667,109 @@ const Comment = () => {
                     </div>
                 </footer>
             </div>
+
+            {closeModal ? (
+                <Fragment />
+            ) : loading ? (
+                <Fragment></Fragment>
+            ) : (
+                <div
+                    onClick={(e) => {
+                        setCloseModal(true);
+                    }}
+                    className={cx('comment-mobile')}
+                >
+                    <div
+                        onClick={(e) => {
+                            e.stopPropagation();
+                        }}
+                        className={cx('comment-mobile-container')}
+                    >
+                        <div onClick={() => setCloseModal(true)} className={cx('close-icon-mobile')}>
+                            <FontAwesomeIcon icon={faClose} />
+                        </div>
+                        <header className={cx('comment-header-mobile')}>{`${data.comments_count} bình luận`}</header>
+
+                        <div className={cx('comment-items-mobile')}>
+                            {commentData.map((item) => {
+                                return <CommentItem key={item.id} data={item} />;
+                            })}
+                        </div>
+
+                        <footer className={cx('post-comment')}>
+                            <div className={cx('post-wrapper')}>
+                                {!auth ? (
+                                    <p
+                                        onClick={() => {
+                                            navigate('/login');
+                                        }}
+                                        className={cx('notification')}
+                                    >
+                                        Login to comment!
+                                    </p>
+                                ) : (
+                                    <div className={cx('post-create')}>
+                                        <div className={cx('input-post')}>
+                                            <textarea
+                                                value={textInput}
+                                                onChange={(e) => {
+                                                    setTextInput(e.target.value);
+                                                }}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter' && !e.shiftKey) {
+                                                        if (textInput.trim() !== '') {
+                                                            e.preventDefault();
+                                                            postBtn.current.click();
+                                                        }
+                                                    }
+                                                }}
+                                                rows="1"
+                                                placeholder={`${t('Comments')}...`}
+                                                spellCheck={false}
+                                            ></textarea>
+                                        </div>
+
+                                        {textInput.trim().length > 0 ? (
+                                            <button
+                                                ref={postBtn}
+                                                onClick={() => {
+                                                    request
+                                                        .post(
+                                                            `/videos/${data.id}/comments`,
+                                                            {
+                                                                comment: textInput,
+                                                            },
+                                                            {
+                                                                headers: {
+                                                                    Authorization: `Bearer ${Cookies.get(
+                                                                        'access_token',
+                                                                    )}`,
+                                                                },
+                                                            },
+                                                        )
+                                                        .then(() => {
+                                                            setTextInput('');
+                                                            setIsMounted(!isMounted);
+                                                            toast.success('Đăng thành công!');
+                                                        })
+                                                        .catch((err) => console.log(err));
+                                                }}
+                                                className={cx('new-comment-active')}
+                                            >
+                                                <span>{t('Post')}</span>
+                                            </button>
+                                        ) : (
+                                            <button className={cx('new-comment')}>
+                                                <span>{t('Post')}</span>
+                                            </button>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
