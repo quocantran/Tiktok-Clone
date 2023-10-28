@@ -627,7 +627,8 @@ const Comment = () => {
                                         rows="1"
                                         placeholder={`${t('Comments')}...`}
                                         spellCheck={false}
-                                    ></textarea>
+                                        
+                                    />
                                 </div>
 
                                 {textInput.trim().length > 0 ? (
