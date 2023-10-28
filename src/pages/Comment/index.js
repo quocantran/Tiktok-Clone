@@ -635,6 +635,10 @@ const Comment = () => {
                                     <button
                                         ref={postBtn}
                                         onClick={() => {
+                                            setData((prev) => ({
+                                                ...prev,
+                                                comments_count: prev.comments_count + 1,
+                                            }));
                                             request
                                                 .post(
                                                     `/videos/${data.id}/comments`,
@@ -734,6 +738,10 @@ const Comment = () => {
                                             <button
                                                 ref={postBtn}
                                                 onClick={() => {
+                                                    setData((prev) => ({
+                                                        ...prev,
+                                                        comments_count: prev.comments_count + 1,
+                                                    }));
                                                     request
                                                         .post(
                                                             `/videos/${data.id}/comments`,
