@@ -756,11 +756,11 @@
         z-index: 9999;
         bottom: 0;
         width: 100%;
-        background-color: #fff;
+        background-color: var(--background-color-white);
         border-radius: 12px 12px 0px 0px;
         transition: all 0.3s ease;
         header {
-            color: rgb(22, 24, 35);
+            color: var(--text-color);
             font-weight: 600;
             font-size: 14px;
             line-height: 17px;
@@ -783,6 +783,7 @@
             right: 16px;
             top: 9px;
             z-index: 9999;
+            color: var(--text-color);
             svg {
                 width: 16px;
                 height: 16px;
