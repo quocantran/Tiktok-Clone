@@ -461,7 +461,13 @@ const Comment = () => {
 
                         <div className={cx('music-video')}>
                             <img src={svg.musicLight} alt="icon" />
-                            <span>{data.music ? data.music : 'Âm thanh trong video!'}</span>
+                            <div className={cx('name-music')}>
+                                <span>
+                                    <p>{data.music ? data.music : 'Âm thanh trong video!'}</p>
+                                    <p>{data.music ? data.music : 'Âm thanh trong video!'}</p>
+                                    <p>{data.music ? data.music : 'Âm thanh trong video!'}</p>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>

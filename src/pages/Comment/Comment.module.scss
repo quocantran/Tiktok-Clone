@@ -312,6 +312,12 @@
         color: rgb(255, 255, 255);
     }
 }
+
+.name-music{
+    
+    overflow: hidden;
+}
+
 .comment-video {
     position: absolute;
     top: 64%;
@@ -690,7 +696,7 @@
         }
         .music-video {
             font-size: 15px;
-
+            width: 190px;
             display: flex;
             align-items: center;
             justify-self: center;
@@ -698,10 +704,13 @@
                 margin-right: 8px;
             }
             span {
+                width: max-content;
                 display: -webkit-box;
-                -webkit-line-clamp: 1;
-                -webkit-box-orient: vertical;
+                animation: VideoPreview_text-run__ek9Dm 5s linear infinite;
                 overflow: hidden;
+            }
+            p{
+                margin-right: 20px;
             }
         }
     }
@@ -807,5 +816,20 @@
     }
     .comment-user{
         width: 300px;
+    }
+}
+
+@keyframes VideoPreview_text-run__ek9Dm {
+    0% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+    85% {
+        -webkit-transform: translateX(-33.33%);
+        transform: translateX(-33.33%);
+    }
+    100% {
+        -webkit-transform: translateX(-33.33%);
+        transform: translateX(-33.33%);
     }
 }
