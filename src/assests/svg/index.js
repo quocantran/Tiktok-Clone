@@ -53,6 +53,7 @@ const svg = {
     lock : require('../svg/lock.svg').default,
     lockLight : require('../svg/lockLight.svg').default,
     followMobile : require('../svg/followMobile.svg').default,
+    heartCommentLight : require('../svg/heartCommentLight.svg').default
     
 
     

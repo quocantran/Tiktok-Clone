@@ -17,6 +17,7 @@ const CommentItem = ({ data }) => {
     const [like, setLike] = useState(dataComment.is_liked);
     const navigate = useNavigate();
     const auth = useSelector(state => state.auth.login.success);
+    const dark = useSelector(state => state.theme.dark);
     const handleClick = () => {
         if(!auth){
             navigate('/login');
@@ -77,9 +78,9 @@ const CommentItem = ({ data }) => {
                 <span className={cx('like-comment')}>
                     {like ? (
                         <img onClick={handleClick} src={svg.heartActive} alt="icon" />
-                    ) : (
-                        <img onClick={handleClick} src={svg.heartComment} alt="icon" />
-                    )}
+                    ) : 
+                        dark ? <img onClick={handleClick} src={svg.heartCommentLight} alt = 'icon'/> : <img onClick={handleClick} src={svg.heartComment} alt="icon" />
+                    }
                     <p>{dataComment.likes_count}</p>
                 </span>
             </div>
