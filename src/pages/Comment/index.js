@@ -214,9 +214,8 @@ const Comment = () => {
                 setLoading(false);
             })
             .catch(() => {
-                if (id <= 0 || id > 3137) {
-                    navigate('/all/video/1');
-                }
+                navigate(-1);
+
             });
     }, [index]);
 
