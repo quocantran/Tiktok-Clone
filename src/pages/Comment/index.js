@@ -38,11 +38,14 @@ const MAX_PAGE = 15;
 
 const DEFAULT_TYPE = 'for-you';
 
+const PAGE_COMMENT = 1;
+
 const Comment = () => {
     const max = MAX_PAGE;
     const min = MIN_PAGE;
     const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
     const [page, setPage] = useState(randomNum);
+    const [pageComment, setPageComment] = useState(PAGE_COMMENT);
     const { id } = useParams();
     const [dataId, setDataId] = useState([Number(id)]);
     const nextBtn = useRef();
@@ -63,6 +66,7 @@ const Comment = () => {
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [commentData, setCommentData] = useState([]);
+    const [maxPageComment, setMaxPageComment] = useState(PAGE_COMMENT);
     const navigate = useNavigate();
     const videoRef = useRef();
     const dispatch = useDispatch();
@@ -71,6 +75,9 @@ const Comment = () => {
     const videoPlayerRef = useRef();
     const [closeModal, setCloseModal] = useState(true);
     const imgAvatar = useRef();
+    const commentWrapperPc = useRef();
+
+    const commentWrapperMobile = useRef(null);
 
     const [isFollowed, setIsFollowed] = useState(data.user?.is_followed);
 
@@ -103,10 +110,10 @@ const Comment = () => {
                         Authorization: `Bearer ${Cookies.get('access_token')}`,
                     },
                 })
-                .then(() => setIsMounted(!isMounted));
+                
         } else {
             setLike(false);
-            setIsMounted(!isMounted);
+            
             setData((prev) => ({
                 ...prev,
                 likes_count: prev.likes_count - 1,
@@ -202,6 +209,52 @@ const Comment = () => {
     }, [index]);
 
     useEffect(() => {
+        if (commentWrapperPc.current) {
+            const handleScroll = () => {
+                const div = commentWrapperPc?.current;
+
+                if (div) {
+                    if (div.scrollTop + div.clientHeight >= div.scrollHeight && pageComment <= maxPageComment) {
+                        setPageComment((prev) => prev + 1);
+                    }
+                }
+            };
+
+            commentWrapperPc.current?.addEventListener('scroll', handleScroll);
+
+            return () => {
+                commentWrapperPc.current?.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, [pageComment]);
+
+    useEffect(() => {
+        if (!closeModal) {
+            commentWrapperMobile.current = document.querySelector('.Comment_comment-items-mobile__w-GVW');
+        } else {
+            commentWrapperMobile.current = null;
+        }
+
+        if (commentWrapperMobile.current) {
+            const handleScroll = () => {
+                const div = commentWrapperMobile?.current;
+
+                if (div) {
+                    if (div.scrollTop + div.clientHeight >= div.scrollHeight && pageComment <= maxPageComment) {
+                        setPageComment((prev) => prev + 1);
+                    }
+                }
+            };
+
+            commentWrapperMobile.current?.addEventListener('scroll', handleScroll);
+
+            return () => {
+                commentWrapperMobile.current?.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, [closeModal, pageComment]);
+
+    useEffect(() => {
         setLoading(true);
         request
             .get(`/videos/${id}`, {
@@ -215,22 +268,39 @@ const Comment = () => {
             })
             .catch(() => {
                 navigate(-1);
-
             });
     }, [index]);
 
     useEffect(() => {
+        setPageComment(1);
+        setCommentData([]);
+    },[id])
+
+    useEffect(() => {
+        setPageComment(1);
+        setCommentData([]);
+    },[isMounted])
+
+    useEffect(() => {
         request
             .get(`/videos/${id}}/comments`, {
+                params: {
+                    page: pageComment,
+                },
+
                 headers: {
                     Authorization: `Bearer ${Cookies.get('access_token') || TEMP_TOKEN}`,
                 },
             })
             .then((res) => {
-                setCommentData(res.data.data);
+                setCommentData((prev) => [...prev, ...res.data.data]);
+                
+                setMaxPageComment(res.data.meta.pagination.total_pages);
             })
             .catch((err) => console.log());
-    }, [isMounted, id]);
+    }, [isMounted, id, pageComment]);
+
+    
 
     useEffect(() => {
         const video = videoRef.current;
@@ -597,7 +667,7 @@ const Comment = () => {
                         </button>
                     </div>
                 </div>
-                <div className={cx('comment-wrapper')}>
+                <div ref={commentWrapperPc} className={cx('comment-wrapper')}>
                     {commentData.map((item) => {
                         return <CommentItem key={item.id} data={item} />;
                     })}
@@ -632,7 +702,6 @@ const Comment = () => {
                                         rows="1"
                                         placeholder={`${t('Comments')}...`}
                                         spellCheck={false}
-                                        
                                     />
                                 </div>
 
@@ -700,7 +769,7 @@ const Comment = () => {
                         </div>
                         <header className={cx('comment-header-mobile')}>{`${data.comments_count} bình luận`}</header>
 
-                        <div className={cx('comment-items-mobile')}>
+                        <div ref={commentWrapperMobile} className={cx('comment-items-mobile')}>
                             {commentData.map((item) => {
                                 return <CommentItem key={item.id} data={item} />;
                             })}

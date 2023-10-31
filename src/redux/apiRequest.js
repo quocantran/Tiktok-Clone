@@ -1,10 +1,10 @@
-import axios from 'axios';
-import { loginFailed, loginStart, loginSuccess, registerFailed, registerStart, registerSucces } from './authSlice';
+
+import { loginStart, loginSuccess, registerFailed, registerStart, registerSucces } from './authSlice';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 import request from '../ultis/request';
 
-export const loginUser = async (user, dispatch, navigate,isNavigateHome) => {
+export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
 
     try {
