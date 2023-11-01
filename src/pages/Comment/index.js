@@ -230,7 +230,7 @@ const Comment = () => {
 
     useEffect(() => {
         if (!closeModal) {
-            commentWrapperMobile.current = document.querySelector('.Comment_comment-items-mobile__w-GVW');
+            commentWrapperMobile.current = document.getElementById('comment-wrapper-mobile');
         } else {
             commentWrapperMobile.current = null;
         }
@@ -769,7 +769,7 @@ const Comment = () => {
                         </div>
                         <header className={cx('comment-header-mobile')}>{`${data.comments_count} bình luận`}</header>
 
-                        <div ref={commentWrapperMobile} className={cx('comment-items-mobile')}>
+                        <div id = 'comment-wrapper-mobile' ref={commentWrapperMobile} className={cx('comment-items-mobile')}>
                             {commentData.map((item) => {
                                 return <CommentItem key={item.id} data={item} />;
                             })}
