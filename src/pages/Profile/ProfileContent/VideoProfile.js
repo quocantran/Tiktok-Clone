@@ -38,6 +38,7 @@ const VideoProfile = ({ index, setIndex, data, idx }) => {
         if (isVideoLoaded && idx == index) {
             videoElement.play();
         } else {
+            videoElement.currentTime = 0;
             videoElement.pause();
         }
     }, [isVideoLoaded, idx, index]);

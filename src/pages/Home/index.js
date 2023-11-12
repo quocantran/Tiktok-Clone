@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 
 const DEFAULT_TYPE = 'for-you';
 const MIN_PAGE = 1;
-const MAX_PAGE = 15;
+const MAX_PAGE = 10;
 
 const Home = () => {
     const max = MAX_PAGE;

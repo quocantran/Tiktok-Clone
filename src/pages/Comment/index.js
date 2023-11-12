@@ -76,7 +76,7 @@ const Comment = () => {
     const [closeModal, setCloseModal] = useState(true);
     const imgAvatar = useRef();
     const commentWrapperPc = useRef();
-
+    const currentUserId = useSelector((state) => state.auth.currentUser.data?.id);
     const commentWrapperMobile = useRef(null);
 
     const [isFollowed, setIsFollowed] = useState(data.user?.is_followed);
@@ -104,16 +104,14 @@ const Comment = () => {
                 ...prev,
                 likes_count: prev.likes_count + 1,
             }));
-            request
-                .post(`/videos/${data.id}/like`, null, {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get('access_token')}`,
-                    },
-                })
-                
+            request.post(`/videos/${data.id}/like`, null, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('access_token')}`,
+                },
+            });
         } else {
             setLike(false);
-            
+
             setData((prev) => ({
                 ...prev,
                 likes_count: prev.likes_count - 1,
@@ -238,7 +236,7 @@ const Comment = () => {
         if (commentWrapperMobile.current) {
             const handleScroll = () => {
                 const div = commentWrapperMobile?.current;
-
+                console.log(div);
                 if (div) {
                     if (div.scrollTop + div.clientHeight >= div.scrollHeight && pageComment <= maxPageComment) {
                         setPageComment((prev) => prev + 1);
@@ -274,12 +272,12 @@ const Comment = () => {
     useEffect(() => {
         setPageComment(1);
         setCommentData([]);
-    },[id])
+    }, [id]);
 
     useEffect(() => {
         setPageComment(1);
         setCommentData([]);
-    },[isMounted])
+    }, [isMounted]);
 
     useEffect(() => {
         request
@@ -294,13 +292,11 @@ const Comment = () => {
             })
             .then((res) => {
                 setCommentData((prev) => [...prev, ...res.data.data]);
-                
+
                 setMaxPageComment(res.data.meta.pagination.total_pages);
             })
             .catch((err) => console.log());
     }, [isMounted, id, pageComment]);
-
-    
 
     useEffect(() => {
         const video = videoRef.current;
@@ -511,10 +507,14 @@ const Comment = () => {
                     </div>
 
                     <div className={cx('follow-video-icon')}>
-                        {isFollowed ? (
-                            <FontAwesomeIcon onClick={handleFollow} icon={faCircleCheck} />
+                        {currentUserId !== data.user?.id ? (
+                            isFollowed ? (
+                                <FontAwesomeIcon onClick={handleFollow} icon={faCircleCheck} />
+                            ) : (
+                                <img onClick={handleFollow} src={svg.followMobile} alt="icon" />
+                            )
                         ) : (
-                            <img onClick={handleFollow} src={svg.followMobile} alt="icon" />
+                            Fragment
                         )}
                     </div>
 
@@ -570,14 +570,18 @@ const Comment = () => {
                             </div>
                         </div>
 
-                        {dark ? (
-                            <Button onClick={handleFollow} outline>
-                                {isFollowed ? t('Following') : t('Follow')}
-                            </Button>
+                        {currentUserId !== data.user?.id ? (
+                            dark ? (
+                                <Button onClick={handleFollow} outline>
+                                    {isFollowed ? t('Following') : t('Follow')}
+                                </Button>
+                            ) : (
+                                <Button onClick={handleFollow} primary>
+                                    {isFollowed ? t('Following') : t('Follow')}
+                                </Button>
+                            )
                         ) : (
-                            <Button onClick={handleFollow} primary>
-                                {isFollowed ? t('Following') : t('Follow')}
-                            </Button>
+                            Fragment
                         )}
                     </header>
                     <p className={cx('description')}>{data.description}</p>
@@ -769,7 +773,11 @@ const Comment = () => {
                         </div>
                         <header className={cx('comment-header-mobile')}>{`${data.comments_count} bình luận`}</header>
 
-                        <div id = 'comment-wrapper-mobile' ref={commentWrapperMobile} className={cx('comment-items-mobile')}>
+                        <div
+                            id="comment-wrapper-mobile"
+                            ref={commentWrapperMobile}
+                            className={cx('comment-items-mobile')}
+                        >
                             {commentData.map((item) => {
                                 return <CommentItem key={item.id} data={item} />;
                             })}
