@@ -18,7 +18,7 @@ import Loading from '../Loading';
 
 const cx = classNames.bind(styles);
 
-const Video = ({ data, muted, followed,isLike, volumeValue }) => {
+const Video = ({ data, muted, followed, isLike, volumeValue }) => {
     const { t } = useTranslation();
     const imgRef = useRef();
     const navigate = useNavigate();
@@ -34,6 +34,7 @@ const Video = ({ data, muted, followed,isLike, volumeValue }) => {
     const videoControlRef = useRef();
     const videoPlayerRef = useRef();
     const [loading, setLoading] = useState(true);
+    const [active, setActive] = useState(false);
 
     const heartRef = useRef();
     const containerVariants = {
@@ -63,12 +64,17 @@ const Video = ({ data, muted, followed,isLike, volumeValue }) => {
             toast.error('Vui lòng đăng nhập!');
             return;
         }
+        setActive(true);
         if (!isFollowed) {
             request
                 .post(`/users/${dataVideo.user.id}/follow`, null, {
                     headers: {
                         Authorization: `Bearer ${Cookies.get('access_token')}`,
                     },
+                })
+                .then(() => {
+                    setIsFollowed(!isFollowed);
+                    setActive(false);
                 })
                 .catch();
         } else {
@@ -78,9 +84,12 @@ const Video = ({ data, muted, followed,isLike, volumeValue }) => {
                         Authorization: `Bearer ${Cookies.get('access_token')}`,
                     },
                 })
+                .then(() => {
+                    setIsFollowed(!isFollowed);
+                    setActive(false);
+                })
                 .catch();
         }
-        setIsFollowed(!isFollowed);
     };
 
     const handleChangeVolume = (e) => {
@@ -95,7 +104,6 @@ const Video = ({ data, muted, followed,isLike, volumeValue }) => {
     };
 
     const handlePlayVideoInView = useCallback(() => {
-        
         const video = videoRef.current;
         const bounding = videoRef.current.getBoundingClientRect();
 
@@ -193,11 +201,7 @@ const Video = ({ data, muted, followed,isLike, volumeValue }) => {
 
                 <div className={cx('video-content')}>
                     <div ref={videoPlayerRef} onClick={handleClick} className={cx('video-player')}>
-                        {loading ? (
-                            <Loading/>
-                        ) : (
-                            <></>
-                        )}
+                        {loading ? <Loading /> : <></>}
                         <div ref={videoControlRef} className={cx('video-control')}>
                             <img src={dataVideo.thumb_url} alt="icon" />
                             <video muted={muted} ref={videoRef} className={cx('video')} loop>
@@ -347,7 +351,7 @@ const Video = ({ data, muted, followed,isLike, volumeValue }) => {
                 </div>
             </div>
 
-            <Button onClick={handleFollow} outline className="follow-btn">
+            <Button active={active} onClick={handleFollow} outline className="follow-btn">
                 {isFollowed ? t('Following') : t('Follow')}
             </Button>
         </div>

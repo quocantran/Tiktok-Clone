@@ -1,4 +1,4 @@
-.loading-icon{
+.loading-icon {
     line-height: 0;
     left: 40%;
     position: absolute;
@@ -22,7 +22,8 @@
     -webkit-user-select: none;
     width: 34px;
     z-index: 1;
-    &:before,&:after {
+    &:before,
+    &:after {
         background: #4de8f4;
         -webkit-animation-duration: var(--animation-duration);
         animation-duration: var(--animation-duration);
@@ -46,7 +47,12 @@
     }
 }
 
-.comment-video-loading{
+.login-loading {
+    left: 42%;
+    top: 40%;
+}
+
+.comment-video-loading {
     left: 45%;
     top: 50%;
 }

@@ -1,4 +1,4 @@
-.wrapper{
+.wrapper {
     font-size: 16px;
     border-radius: 4px;
     border: solid 1px transparent;
@@ -12,62 +12,62 @@
     align-items: center;
     justify-content: center;
     font-family: 'Arial', sans-serif;
-
 }
 
-.primary{
+.primary {
     color: var(--button-white-color);
     background-color: var(--primary-color);
 }
 
-.outline{
+.outline {
     color: var(--primary-color);
     border-color: currentColor;
     border-radius: 0;
-    &:hover{
+    &:hover {
         background-color: var(--hover-button-color);
+    }
+    &:active {
+        background-color: rgba(254, 44, 85, 0.12);
     }
 }
 
-.large{
+.large {
     min-width: 112px;
     padding: 14px 16px;
     border-radius: 4px;
 }
 
-.download{
+.download {
     border-radius: 0;
     color: var(--button-white-color);
     min-width: 188px;
     min-height: 48px;
-    
+
     font-weight: 600;
     font-size: 14px;
     line-height: 18px;
     border-radius: 2px;
     margin-top: 20px;
     cursor: pointer;
-
 }
 
-.follow-btn{
+.follow-btn {
     position: absolute;
     top: 28px;
     right: 0;
     border-radius: 2px;
 }
 
-.button-following{
+.button-following {
     font-size: 17px;
     margin-top: 8px;
     min-height: 37px;
     min-width: 164px;
     margin: 0 auto;
-    
 }
 
 @media (max-width: 767px) {
-    .follow-btn{
+    .follow-btn {
         right: 20px;
     }
 }

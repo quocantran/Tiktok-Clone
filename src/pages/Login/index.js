@@ -5,41 +5,40 @@ import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { loginUser } from '../../redux/apiRequest';
 import { useDispatch } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import verifyUser from '../../apiServices/verifyUser';
 import { toast } from 'react-toastify';
+import Loading from '../../components/Loading';
 
 const cx = classNames.bind(styles);
 
 const Login = () => {
-    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [user,setUser] = useState();
+    const [user, setUser] = useState();
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
-        verifyUser()
-            .then(user => setUser(user));
-    },[])
-    
+        verifyUser().then((user) => setUser(user));
+    }, []);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+
     const handleLogin = async (e) => {
         e.preventDefault();
         const user = {
             email: email,
             password: password,
         };
-
+        setLoading(true);
         await loginUser(user, dispatch, navigate);
+        setLoading(false);
     };
 
-    
-    if(user){
+    if (user) {
         toast.error('Bạn đã đăng nhập rồi!');
         navigate('/');
     }
-    
 
     return (
         <div className={cx('wrapper')}>
@@ -78,10 +77,12 @@ const Login = () => {
 
                         <div className={cx('register')}>
                             <Link to="/register">Don't have an account? Sign Up</Link>
-                            <Link style={{display : 'block'}} to="/">Home Page</Link>
+                            <Link style={{ display: 'block' }} to="/">
+                                Home Page
+                            </Link>
                         </div>
                         <div className={cx('submit-btn')}>
-                            <button type="submit">LOGIN</button>
+                            <button type="submit">{loading ? <Loading className="login-loading" /> : 'LOGIN'}</button>
                         </div>
                     </form>
                 </div>
