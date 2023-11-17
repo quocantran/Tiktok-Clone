@@ -43,7 +43,7 @@ const Upload = () => {
     });
     const [leftValue, setLeftValue] = useState(0);
     const [play, setPlay] = useState(false);
-    const [muted, setMuted] = useState(true);
+    const [muted, setMuted] = useState(false);
     const [width, setWidth] = useState(0);
     const videoRef = useRef(null);
     const [isSelect, setIsSelect] = useState(false);
@@ -113,6 +113,12 @@ const Upload = () => {
         videoRefMobile.current.currentTime = newTime;
     };
 
+    const handleMetadataLoaded = () => {
+        setDuration(secondsToMinutesAndSeconds(videoRef.current.duration));
+
+        videoRef.current.removeEventListener('loadedmetadata', handleMetadataLoaded);
+    };
+
     useEffect(() => {
         if (!isLogin) {
             navigate('/login');
@@ -127,9 +133,6 @@ const Upload = () => {
 
             video.addEventListener('timeupdate', () => {
                 setVideoTime(video.currentTime);
-                if (video.currentTime < 100) {
-                    setWidth(video.currentTime);
-                }
             });
         }
     }, [file]);
@@ -145,11 +148,12 @@ const Upload = () => {
         }
     }, [file, srcVideo]);
 
-    const handleMetadataLoaded = () => {
-        setDuration(secondsToMinutesAndSeconds(videoRef.current.duration));
-
-        videoRef.current.removeEventListener('loadedmetadata', handleMetadataLoaded);
-    };
+    useEffect(() => {
+        if (videoRefMobile.current) {
+            const video = videoRefMobile?.current;
+            setWidth((video.currentTime / video.duration) * 100);
+        }
+    }, [videoRefMobile.current?.currentTime]);
 
     return (
         <div className={cx('wrapper')}>
@@ -368,7 +372,11 @@ const Upload = () => {
                                                         min="0"
                                                         max="100"
                                                         step="1"
-                                                        value={videoTime}
+                                                        value={
+                                                            (videoRefMobile.current?.currentTime /
+                                                                videoRefMobile.current?.duration) *
+                                                            100
+                                                        }
                                                         onChange={handleChange}
                                                     />
                                                     <div
@@ -483,8 +491,8 @@ const Upload = () => {
                                                         xmlns="http://www.w3.org/2000/svg"
                                                     >
                                                         <path
-                                                            fill-rule="evenodd"
-                                                            clip-rule="evenodd"
+                                                            fillRule="evenodd"
+                                                            clipRule="evenodd"
                                                             d="M25.5187 35.2284C24.7205 36.1596 23.2798 36.1596 22.4816 35.2284L8.83008 19.3016C7.71807 18.0042 8.63988 16 10.3486 16H37.6517C39.3604 16 40.2822 18.0042 39.1702 19.3016L25.5187 35.2284Z"
                                                         ></path>
                                                     </svg>
@@ -644,35 +652,40 @@ const Upload = () => {
                                             </Button>
                                             <Button
                                                 onClick={() => {
-                                                    setLoading(true);
-                                                    let formdata = new FormData();
-                                                    formdata.append('description', nameFile);
-                                                    formdata.append('upload_file', file);
-                                                    formdata.append(
-                                                        'thumbnail_time',
-                                                        thumbnailRef.current.currentTime.toFixed(0),
-                                                    );
-                                                    formdata.append('music', `${nameMusic}`);
-                                                    formdata.append('viewable', selected.toLowerCase());
-                                                    for (let key in stateCheck) {
-                                                        if (stateCheck[key]) {
-                                                            formdata.append('allows[]', `${key}`);
+                                                    if (!loading) {
+                                                        setLoading(true);
+                                                        let formdata = new FormData();
+                                                        formdata.append('description', nameFile);
+                                                        formdata.append('upload_file', file);
+                                                        formdata.append(
+                                                            'thumbnail_time',
+                                                            thumbnailRef.current.currentTime.toFixed(0),
+                                                        );
+                                                        formdata.append('music', `${nameMusic}`);
+                                                        formdata.append('viewable', selected.toLowerCase());
+                                                        for (let key in stateCheck) {
+                                                            if (stateCheck[key]) {
+                                                                formdata.append('allows[]', `${key}`);
+                                                            }
                                                         }
+                                                        request
+                                                            .post('/videos', formdata, {
+                                                                headers: {
+                                                                    Authorization: `Bearer ${Cookies.get(
+                                                                        'access_token',
+                                                                    )}`,
+                                                                },
+                                                            })
+                                                            .then(() => {
+                                                                setLoading(false);
+                                                                navigate(`/@${currentUser.nickname}`);
+                                                                toast.success('Đăng tải video thành công!');
+                                                            })
+                                                            .catch((err) => {
+                                                                setLoading(false);
+                                                                toast.error('Có lỗi xảy ra, vui lòng thử lại!');
+                                                            });
                                                     }
-                                                    request
-                                                        .post('/videos', formdata, {
-                                                            headers: {
-                                                                Authorization: `Bearer ${Cookies.get('access_token')}`,
-                                                            },
-                                                        })
-                                                        .then(() => {
-                                                            setLoading(false);
-                                                            navigate(`/@${currentUser.nickname}`);
-                                                            toast.success('Đăng tải video thành công!');
-                                                        })
-                                                        .catch((err) => {
-                                                            toast.error('Có lỗi xảy ra, vui lòng thử lại!');
-                                                        });
                                                 }}
                                                 primary
                                                 className="post-btn"
