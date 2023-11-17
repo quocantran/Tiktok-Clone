@@ -7,6 +7,7 @@ import Profile from '../pages/Profile';
 import Live from '../pages/Live';
 import Explore from '../pages/Explore';
 import Comment from '../pages/Comment';
+import { HeaderOnly } from '../components/Layouts';
 
 const publicRoutes = [
     {
@@ -17,15 +18,20 @@ const publicRoutes = [
         path: '/following',
         component: Following,
     },
-    
 
     {
-        path : '/live',
-        component : Live
+        path: '/live',
+        component: Live,
     },
     {
-        path : '/explore',
-        component : Explore
+        path: '/explore',
+        component: Explore,
+    },
+
+    {
+        path: '/upload',
+        component: Upload,
+        layout: HeaderOnly,
     },
 
     {
@@ -43,14 +49,11 @@ const publicRoutes = [
         path: '/@:nickname',
         component: Profile,
     },
-    
+
     {
-        path : '/all/video/:id',
+        path: '/all/video/:id',
         component: Comment,
-        
-    }
+    },
 ];
-
-
 
 export { publicRoutes };

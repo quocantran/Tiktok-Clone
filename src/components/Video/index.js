@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './Video.module.scss';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import noImage from '../../assests/png/noImage.jpg';
 import { useNavigate } from 'react-router-dom';
 import Button from '../Button';
@@ -13,7 +13,7 @@ import request from '../../ultis/request';
 import Cookies from 'js-cookie';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { faL } from '@fortawesome/free-solid-svg-icons';
+
 import Loading from '../Loading';
 
 const cx = classNames.bind(styles);
@@ -33,6 +33,7 @@ const Video = ({ data, muted, followed, isLike, volumeValue }) => {
     const [isFollowed, setIsFollowed] = useState(followed);
     const videoControlRef = useRef();
     const videoPlayerRef = useRef();
+    const currentUser = useSelector((state) => state.auth.currentUser.data);
     const [loading, setLoading] = useState(true);
     const [active, setActive] = useState(false);
 
@@ -351,9 +352,13 @@ const Video = ({ data, muted, followed, isLike, volumeValue }) => {
                 </div>
             </div>
 
-            <Button active={active} onClick={handleFollow} outline className="follow-btn">
-                {isFollowed ? t('Following') : t('Follow')}
-            </Button>
+            {currentUser.id !== dataVideo.user.id ? (
+                <Button active={active} onClick={handleFollow} outline className="follow-btn">
+                    {isFollowed ? t('Following') : t('Follow')}
+                </Button>
+            ) : (
+                Fragment
+            )}
         </div>
     );
 };

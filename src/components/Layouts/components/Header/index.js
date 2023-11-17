@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next';
 import noImg from '../../../../assests/png/noImage.jpg';
 
 import Search from '../Search';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import verifyUser from '../../../../apiServices/verifyUser';
@@ -37,14 +37,14 @@ const Header = () => {
     const { t } = useTranslation();
     const { i18n } = useTranslation();
     const [user, setUser] = useState();
+    const isLogin = useSelector((state) => state.auth.login.success);
     const language = useSelector((state) => state.language.languageDefault);
     const dark = useSelector((state) => state.theme.dark);
     const imgRef = useRef();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        verifyUser()
-            .then((res) => setUser(res?.data));
-        
+        verifyUser().then((res) => setUser(res?.data));
     }, []);
 
     useEffect(() => {
@@ -91,9 +91,9 @@ const Header = () => {
 
     const USER_ITEMS = [
         {
-            icon : <FontAwesomeIcon icon={faUser}/>,
-            title : t('View profile'),
-            profile : true,
+            icon: <FontAwesomeIcon icon={faUser} />,
+            title: t('View profile'),
+            profile: true,
         },
         ...MENU_ITEMS,
         {
@@ -104,7 +104,6 @@ const Header = () => {
         },
     ];
 
-    
     return (
         <header className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -119,9 +118,14 @@ const Header = () => {
                 </div>
                 <Search />
 
-                {user ? (
+                {isLogin ? (
                     <div className={cx('actions')}>
-                        <div className={cx('upload-btn-user')}>
+                        <div
+                            onClick={() => {
+                                navigate('/upload');
+                            }}
+                            className={cx('upload-btn-user')}
+                        >
                             <div className={cx('plus-icon')}>
                                 <FontAwesomeIcon icon={faPlus} />
                             </div>
@@ -192,7 +196,7 @@ const Header = () => {
                                     onError={() => {
                                         imgRef.current.src = noImg;
                                     }}
-                                    src={user.avatar}
+                                    src={user?.avatar}
                                     alt="icon"
                                 />
                             </div>
@@ -200,7 +204,12 @@ const Header = () => {
                     </div>
                 ) : (
                     <div className={cx('actions')}>
-                        <div className={cx('upload-btn')}>
+                        <div
+                            onClick={() => {
+                                navigate('/upload');
+                            }}
+                            className={cx('upload-btn')}
+                        >
                             <div className={cx('plus-icon')}>
                                 <FontAwesomeIcon icon={faPlus} />
                             </div>

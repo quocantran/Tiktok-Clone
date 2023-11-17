@@ -16,7 +16,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
-const ProfileContent = ({mount,setMount, data, followed, dataVideo }) => {
+const ProfileContent = ({ mount, setMount, data, followed, dataVideo }) => {
     const imgRef = useRef();
     const [isFollowed, setIsFollowed] = useState(followed);
     const { nickname } = useParams();
@@ -36,10 +36,10 @@ const ProfileContent = ({mount,setMount, data, followed, dataVideo }) => {
     const [isActiveButton, setIsActiveButton] = useState(false);
     const [firstName, setFirstName] = useState(data?.first_name);
     const [lastName, setLastName] = useState(data?.last_name);
-    const [bio,setBio] = useState(data?.bio);
-    const [avatar,setAvatar] = useState(data?.avatar);
-    const [select,setSelect] = useState(false);
-    
+    const [bio, setBio] = useState(data?.bio);
+    const [avatar, setAvatar] = useState(data?.avatar);
+    const [select, setSelect] = useState(false);
+
     useEffect(() => {
         if (dark) {
             if (active) {
@@ -95,8 +95,6 @@ const ProfileContent = ({mount,setMount, data, followed, dataVideo }) => {
             setIsActiveButton(false);
         }
     }, [firstName, lastName]);
-
-    
 
     return (
         <section className={cx('container')}>
@@ -196,10 +194,13 @@ const ProfileContent = ({mount,setMount, data, followed, dataVideo }) => {
                     <div className={cx('update-container')}>
                         <header className={cx('header')}>
                             <h1>Edit profile</h1>
-                            <div onClick={() => {
-                                setUpdate(false);
-                                setIsActiveButton(false);
-                            }} className={cx('close-icon')}>
+                            <div
+                                onClick={() => {
+                                    setUpdate(false);
+                                    setIsActiveButton(false);
+                                }}
+                                className={cx('close-icon')}
+                            >
                                 <FontAwesomeIcon icon={faXmark} />
                             </div>
                         </header>
@@ -208,7 +209,6 @@ const ProfileContent = ({mount,setMount, data, followed, dataVideo }) => {
                                 <div className={cx('title-profile')}>Profile photo</div>
                                 <label className={cx('avatar-user')} htmlFor="avatarProfile">
                                     <img
-                                        
                                         ref={avatarRef}
                                         src={data.avatar}
                                         alt="icon"
@@ -217,18 +217,22 @@ const ProfileContent = ({mount,setMount, data, followed, dataVideo }) => {
                                         }}
                                     />
                                 </label>
-                                <input onChange={(e) => {
-                                    
-                                    if(e.target.files[0]){
-                                        setAvatar(e.target.files[0]);
-                                        setSelect(true);
-                                        console.log(avatar);
-                                        const url = URL.createObjectURL(e.target.files[0]);
-                                        
-                                        avatarRef.current.src = url;
-                                    }
-                                    
-                                }} hidden type="file" tabIndex="-1" id="avatarProfile" />
+                                <input
+                                    onChange={(e) => {
+                                        if (e.target.files[0]) {
+                                            setAvatar(e.target.files[0]);
+                                            setSelect(true);
+                                            console.log(avatar);
+                                            const url = URL.createObjectURL(e.target.files[0]);
+
+                                            avatarRef.current.src = url;
+                                        }
+                                    }}
+                                    hidden
+                                    type="file"
+                                    tabIndex="-1"
+                                    id="avatarProfile"
+                                />
                             </div>
                             <div className={cx('edit-photo')}>
                                 <div className={cx('title')}>Họ</div>
@@ -285,44 +289,31 @@ const ProfileContent = ({mount,setMount, data, followed, dataVideo }) => {
                             </button>
                             <button
                                 onClick={() => {
-                                    if(isActiveButton){
-
-                                        const newData = {
-                                            first_name : firstName,
-                                            last_name : lastName,
-                                            
-                                            bio : bio
-                                        }
+                                    if (isActiveButton) {
                                         const formData = new FormData();
                                         formData.append('first_name', firstName);
                                         formData.append('last_name', lastName);
                                         formData.append('bio', bio);
-                                        if(select){
+                                        if (select) {
                                             formData.append('avatar', avatar);
-                                            
                                         }
-                                        
-                                        
-                                        
-                                        
-                                        request.post('/auth/me?_method=PATCH',formData,{
-                                            headers : {
-                                                Authorization : `Bearer ${Cookies.get('access_token')}`
-                                            }
-                                        })
+
+                                        request
+                                            .post('/auth/me?_method=PATCH', formData, {
+                                                headers: {
+                                                    Authorization: `Bearer ${Cookies.get('access_token')}`,
+                                                },
+                                            })
                                             .then(() => {
-                                                
                                                 setUpdate(false);
                                                 setMount(!mount);
                                                 setIsActiveButton(false);
                                                 toast.success('Cập nhật thông tin thành công!');
                                             })
-                                            .catch(err => {
+                                            .catch((err) => {
                                                 toast.error('Vui lòng thử lại!');
-                                            })
+                                            });
                                     }
-                                        
-                                    
                                 }}
                                 className={cx('submit-btn', {
                                     active: isActiveButton,

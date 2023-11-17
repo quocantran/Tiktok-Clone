@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 
 const DEFAULT_TYPE = 'for-you';
 const MIN_PAGE = 1;
-const MAX_PAGE = 10;
+const MAX_PAGE = 1;
 
 const Home = () => {
     const max = MAX_PAGE;
@@ -23,7 +23,6 @@ const Home = () => {
     const muted = useSelector((state) => state.volume.muted);
     const volumeValue = useSelector((state) => state.volume.value);
     const [page, setPage] = useState(randomNum);
-    
 
     useEffect(() => {
         async function getContent() {
@@ -61,8 +60,6 @@ const Home = () => {
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 {contentData.map((item, idx) => {
-                    
-                
                     return <ContentHomeItem muted={muted} volumeValue={volumeValue} key={idx} data={item} />;
                 })}
             </div>

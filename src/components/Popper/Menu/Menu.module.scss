@@ -1,34 +1,36 @@
-
-body.dark{
-    --primary-color : #fe2c55;
-    --text-color : rgba(255, 255, 255, .9);
-    --white-color : rgba(255, 255, 255, .9);
-    --button-white-color : rgba(255, 255, 255, 1);
-    --hover-color : rgba(22, 24, 35, 1);
-    --input-color : #fff;
-    --icon-color : #fff;
-    --text-color-2 : #fff;
-    --hover-background-color : rgba(22, 24, 35, 0.03);
-    --background-color : rgba(255, 255, 255, .12);
-    --background-color-white : rgb(18, 18, 18);;
-    --button-background-color : #ddd;
-    --tippy-background-color :rgb(37, 37, 37);
-    --search-btn-color : rgba(255, 255, 255, .34);
-    --border-hover : 1px solid rgba(255, 255, 255, .2);
-    --footer-hover-color : rgba(255, 255, 255, .9);
-    --button-background-color : rgba(255, 255, 255, .08);
-    --interact-hover-color : rgba(255, 255, 255, .08);
-    --hover-button-color : rgba(254,44,85,.06);
-    --text-color-grey : rgba(255, 255, 255, 0.5);
-    ::-webkit-scrollbar-thumb{
+body.dark {
+    --primary-color: #fe2c55;
+    --text-color: rgba(255, 255, 255, 0.9);
+    --white-color: rgba(255, 255, 255, 0.9);
+    --button-white-color: rgba(255, 255, 255, 1);
+    --hover-color: rgba(22, 24, 35, 1);
+    --input-color: #fff;
+    --icon-color: #fff;
+    --text-color-2: #fff;
+    --hover-background-color: rgba(22, 24, 35, 0.03);
+    --background-color: rgba(255, 255, 255, 0.12);
+    --background-color-white: rgb(18, 18, 18);
+    --button-background-color: #ddd;
+    --tippy-background-color: rgb(37, 37, 37);
+    --search-btn-color: rgba(255, 255, 255, 0.34);
+    --border-hover: 1px solid rgba(255, 255, 255, 0.2);
+    --footer-hover-color: rgba(255, 255, 255, 0.9);
+    --button-background-color: rgba(255, 255, 255, 0.08);
+    --interact-hover-color: rgba(255, 255, 255, 0.08);
+    --hover-button-color: rgba(254, 44, 85, 0.06);
+    --text-color-grey: rgba(255, 255, 255, 0.5);
+    ::-webkit-scrollbar-thumb {
         background-color: var(--background-color);
     }
-    --box-shadow-header : hsla(0,0%,100%,.12) 0px 1px 1px;
-    --background-upload-color : rgba(18, 18, 18, 1);
-    --border-color-grey : hsla(0,0%,100%,.2);
-    
+    --box-shadow-header: hsla(0, 0%, 100%, 0.12) 0px 1px 1px;
+    --background-upload-color: rgba(18, 18, 18, 1);
+    --border-color-grey: hsla(0, 0%, 100%, 0.2);
+    --background-color-grey: rgb(18, 18, 18);
+    --background-color-grey-2: hsla(0, 0%, 100%, 0.122);
+    --border-color-black: hsla(0, 0%, 100%, 0.75);
+    --background-color-white-2: hsla(0, 0%, 100%, 0.122);
+    --background-color-white-3: #252525;
 }
-
 
 .menu-container {
     min-width: 224px;
@@ -84,7 +86,6 @@ body.dark{
     color: var(--text-color);
 }
 
-
 .title {
     flex-grow: 1;
 }
@@ -112,7 +113,7 @@ body.dark{
     }
 }
 
-input:checked + .switch-mode{
+input:checked + .switch-mode {
     background-color: #0be09b;
 }
 

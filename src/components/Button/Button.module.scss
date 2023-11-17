@@ -66,6 +66,33 @@
     margin: 0 auto;
 }
 
+.discard-btn {
+    background-color: var(--button-background-color);
+    border: 1px solid var(--border-color-grey);
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-right: 15px;
+    height: 48px !important;
+    width: 164px !important;
+    &:hover {
+        background-color: var(--background-color);
+    }
+}
+
+.post-btn {
+    height: 48px !important;
+    width: 164px !important;
+}
+
+.modal-btn,
+.modal-outline-btn {
+    width: 320px;
+    height: 50px;
+    margin-bottom: 15px;
+}
+
 @media (max-width: 767px) {
     .follow-btn {
         right: 20px;

@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutSucces } from '../../../redux/authSlice';
 import { changeLanguage } from '../../../redux/languageSlice';
 import Cookies from 'js-cookie';
-import request from '../../../ultis/request';
+
 import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
@@ -20,8 +20,8 @@ const Menu = ({ children, items = [] }) => {
     const { t } = useTranslation();
     const [menu, setMenu] = useState([{ data: items }]);
     const currentMenu = menu[menu.length - 1];
-    const userNickname = useSelector(state => state.auth.currentUser.data?.nickname);
-    
+    const userNickname = useSelector((state) => state.auth.currentUser.data?.nickname);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -48,7 +48,7 @@ const Menu = ({ children, items = [] }) => {
                                 window.location.reload();
                             }
                         }
-                        if(item.profile){
+                        if (item.profile) {
                             navigate(`/@${userNickname}`);
                         }
                     }}

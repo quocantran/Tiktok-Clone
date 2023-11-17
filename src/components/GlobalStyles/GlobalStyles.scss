@@ -11,7 +11,7 @@
     --icon-color: rgba(22, 24, 35, 0.34);
     --text-color-2: rgba(22, 24, 35, 0.5);
     --hover-background-color: rgba(22, 24, 35, 0.03);
-    --background-color: rgba(22, 24, 35, .06);
+    --background-color: rgba(22, 24, 35, 0.06);
     --background-color-white: #fff;
     --button-background-color: #ddd;
     --tippy-background-color: #fff;
@@ -19,14 +19,19 @@
     --border-hover: 1px solid rgba(22, 24, 35, 0.2);
     --footer-hover-color: rgba(22, 24, 35, 1);
     --button-background-color: #fff;
-    --interact-hover-color : rgba(22, 24, 35, 0.12);
-    --input-background-color : #fff;
-    --hover-button-color : rgba(22, 24, 35, 0.03);
-    --text-color-grey : rgb(115, 116, 123);
-    --box-shadow-header : 0px 1px 1px rgba(0, 0, 0, 0.12);
-    --animation-duration : 0.9s;
-    --background-upload-color :rgba(255, 255, 255, 1);
-    --border-color-grey : rgba(22, 24, 35, 0.12);
+    --interact-hover-color: rgba(22, 24, 35, 0.12);
+    --input-background-color: #fff;
+    --hover-button-color: rgba(22, 24, 35, 0.03);
+    --text-color-grey: rgb(115, 116, 123);
+    --box-shadow-header: 0px 1px 1px rgba(0, 0, 0, 0.12);
+    --animation-duration: 0.9s;
+    --background-upload-color: rgba(255, 255, 255, 1);
+    --border-color-grey: rgba(22, 24, 35, 0.12);
+    --background-color-grey: #f8f8f8;
+    --background-color-grey-2: #f8f8f8;
+    --border-color-black: rgba(22, 24, 35, 0.75);
+    --background-color-white-2: #fff;
+    --background-color-white-3: #fff;
 }
 
 html {
@@ -102,7 +107,7 @@ input[type='range']::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 11px;
     height: 11px;
-    background-color: #fff; /* Màu bạn muốn đổi */
+    background-color: #fff;
     border-radius: 50%;
     cursor: pointer;
 }

@@ -62,7 +62,7 @@
     cursor: pointer;
     font-style: normal;
     padding: 3px 6px;
-    svg{
+    svg {
         color: var(--text-color);
     }
 }
@@ -162,17 +162,11 @@
     }
 }
 
-@media (max-width : 768px){
-    .upload-btn{
-        display: none;
-    }
-    .upload-btn-user{
-        display: none;
-    }
-    .menu-icon{
+@media (max-width: 768px) {
+    .menu-icon {
         padding: 10px 10px;
     }
-    .user-icon{
+    .user-icon {
         padding: 10px 10px;
     }
 }

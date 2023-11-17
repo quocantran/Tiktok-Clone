@@ -18,23 +18,27 @@ function App() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        i18n.changeLanguage(language);
-    }, [language]);
-
-    useEffect(() => {
-        
-        verifyUser()
-            .then((res) => {
+        const fetchData = async () => {
+            try {
+                const res = await verifyUser();
                 if (res?.data) {
                     dispatch(isAuth(true));
                     dispatch(loginSuccess(res.data));
                 } else {
                     dispatch(isAuth(false));
                 }
-            })
-            .catch();
-        setLoading(false);
+            } catch (error) {
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, []);
+
+    useEffect(() => {
+        i18n.changeLanguage(language);
+    }, [language]);
 
     return (
         <Router>
