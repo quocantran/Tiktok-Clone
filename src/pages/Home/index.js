@@ -5,14 +5,12 @@ import { Fragment, useCallback, useEffect, useState } from 'react';
 import * as userService from '../../apiServices/userService';
 import ContentHomeItem from './ContentHomeItem';
 import svg from '../../assests/svg';
-import request from '../../ultis/request';
-import Cookies from 'js-cookie';
 
 const cx = classNames.bind(styles);
 
 const DEFAULT_TYPE = 'for-you';
 const MIN_PAGE = 1;
-const MAX_PAGE = 1;
+const MAX_PAGE = 5;
 
 const Home = () => {
     const max = MAX_PAGE;

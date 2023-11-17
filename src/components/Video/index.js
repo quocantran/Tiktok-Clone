@@ -352,7 +352,7 @@ const Video = ({ data, muted, followed, isLike, volumeValue }) => {
                 </div>
             </div>
 
-            {currentUser.id !== dataVideo.user.id ? (
+            {currentUser?.id !== dataVideo.user.id ? (
                 <Button active={active} onClick={handleFollow} outline className="follow-btn">
                     {isFollowed ? t('Following') : t('Follow')}
                 </Button>
