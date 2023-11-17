@@ -129,7 +129,6 @@ const Upload = () => {
                 setVideoTime(video.currentTime);
                 if (video.currentTime < 100) {
                     setWidth(video.currentTime);
-                    console.log(video.currentTime);
                 }
             });
         }
@@ -657,7 +656,6 @@ const Upload = () => {
                                                     formdata.append('viewable', selected.toLowerCase());
                                                     for (let key in stateCheck) {
                                                         if (stateCheck[key]) {
-                                                            console.log(key);
                                                             formdata.append('allows[]', `${key}`);
                                                         }
                                                     }
