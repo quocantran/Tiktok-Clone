@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-DEMO : https://tiktok-quocan.vercel.app/
+DEMO : https://mytiktok-clone.vercel.app/
 
 ## Available Scripts
 
