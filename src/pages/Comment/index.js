@@ -202,10 +202,10 @@ const Comment = () => {
   useEffect(() => {
     async function getDataVideoIds() {
       try {
-        const lastRoute = routes[routes.length - 2];
+        const lastRoute = routes[routes.length - 1];
         const routeType = lastRoute.split("/")[1];
         const nickname = lastRoute.split("/")[2];
-
+        
         if (routeType === "profile") {
           const res = await request.get(`/users/${nickname}`);
 
@@ -223,7 +223,7 @@ const Comment = () => {
       } catch (err) {}
     }
     getDataVideoIds();
-  }, [page]);
+  }, []);
 
   useEffect(() => {
     if (dataId[index] == dataId[dataId.length - 1]) {
