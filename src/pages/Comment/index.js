@@ -190,6 +190,7 @@ const Comment = () => {
   useEffect(() => {
     setLike(data.is_liked);
   }, [data.is_liked, index]);
+
   useEffect(() => {
     setPlay(true);
   }, [id]);
@@ -201,10 +202,23 @@ const Comment = () => {
   useEffect(() => {
     async function getDataVideoIds() {
       try {
+        const lastRoute = routes[routes.length - 2];
+        const routeType = lastRoute.split("/")[1];
+        const nickname = lastRoute.split("/")[2];
+
+        if (routeType === "profile") {
+          const res = await request.get(`/users/${nickname}`);
+
+          res.data.data.videos.forEach((video) => {
+            if (!dataId.includes(video.id))
+              setDataId((prev) => [...prev, video.id]);
+          });
+        }
         const res = await userService.getContent({ type: DEFAULT_TYPE, page });
 
         res.data.forEach((data) => {
-          setDataId((prev) => [...prev, data.id]);
+          if (!dataId.includes(data.id))
+            setDataId((prev) => [...prev, data.id]);
         });
       } catch (err) {}
     }
