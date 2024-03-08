@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const authSlice = createSlice({
   name: "route",
   initialState: {
-    routes: [],
+    routes: ["/"],
   },
 
   reducers: {
