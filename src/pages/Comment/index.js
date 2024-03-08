@@ -205,7 +205,7 @@ const Comment = () => {
         const lastRoute = routes[routes.length - 1];
         const routeType = lastRoute.split("/")[1];
         const nickname = lastRoute.split("/")[2];
-        
+
         if (routeType === "profile") {
           const res = await request.get(`/users/${nickname}`);
 
@@ -406,6 +406,8 @@ const Comment = () => {
               const nickname = lastRoute.split("/")[2];
               if (routeType == "profile") {
                 navigate(`/${nickname}`);
+              } else if (lastRoute === "/following") {
+                navigate(-1);
               } else navigate("/");
             }}
             className={cx("close-btn")}
