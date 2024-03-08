@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const authSlice = createSlice({
+const routeSlice = createSlice({
   name: "route",
   initialState: {
     routes: ["/"],
@@ -15,12 +15,9 @@ const authSlice = createSlice({
       }
       state.routes.push(action.payload);
     },
-    removeRoute: (state) => {
-      state.routes = [];
-    },
   },
 });
 
-export const { addRoute, removeRoute } = authSlice.actions;
+export const { addRoute } = routeSlice.actions;
 
-export default authSlice.reducer;
+export default routeSlice.reducer;
