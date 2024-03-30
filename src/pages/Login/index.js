@@ -37,16 +37,8 @@ const Login = () => {
       password: password,
     };
     setLoading(true);
-    await loginUser(user, dispatch, navigate);
-    const lastRoute = routes[routes.length - 2];
-    // check if user first time navigate to page
-    if (routes.length <= 2) {
-      navigate("/");
-      return;
-    }
-    if (lastRoute != "/register") {
-      navigate(-1);
-    } else navigate("/");
+    await loginUser(user, dispatch, navigate, routes);
+
     setLoading(false);
   };
 
