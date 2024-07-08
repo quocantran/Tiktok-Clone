@@ -6,6 +6,7 @@ import * as userService from "../../apiServices/userService";
 import ContentHomeItem from "./ContentHomeItem";
 import svg from "../../assests/svg";
 import { addRoute } from "../../redux/routeSlice";
+import { debounce } from "../../helpers/debounce";
 
 const cx = classNames.bind(styles);
 
@@ -22,6 +23,7 @@ const Home = () => {
   const muted = useSelector((state) => state.volume.muted);
   const volumeValue = useSelector((state) => state.volume.value);
   const [page, setPage] = useState(randomNum);
+  const [isFetching, setIsFetching] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(addRoute(window.location.pathname));
@@ -29,28 +31,38 @@ const Home = () => {
 
   useEffect(() => {
     async function getContent() {
+      setIsFetching(true);
       const res = await userService.getContent({ type: DEFAULT_TYPE, page });
+      setIsFetching(false);
       setContentData((prev) => [...prev, ...res.data]);
     }
     getContent();
   }, [page]);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const handleScroll = useCallback(() => {
-    if (window.scrollY + window.innerHeight >= document.body.offsetHeight) {
-      setPage((page) => page + 1);
-    }
     if (window.scrollY >= 100) {
       setHideBtn(false);
     } else {
       setHideBtn(true);
     }
-  });
+  }, [window.scrollY]);
+
+  useEffect(() => {
+    if (!isFetching) {
+      window.addEventListener("scroll", handleScroll);
+    }
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleScroll = debounce(() => {
+    if (
+      window.scrollY + window.innerHeight >= document.body.offsetHeight &&
+      !isFetching
+    ) {
+      if (!isFetching) setPage((page) => page + 1);
+    }
+  }, 100);
 
   const handeScrollToTop = () => {
     window.scrollTo({

@@ -7,6 +7,7 @@ import FollowingContent from "./FollowingContent";
 import svg from "../../assests/svg";
 import SuggestUser from "./SuggestUser";
 import { addRoute } from "../../redux/routeSlice";
+import { debounce } from "../../helpers/debounce";
 
 const cx = classNames.bind(styles);
 
@@ -60,8 +61,11 @@ const Following = () => {
       getSuggestUser();
     }
   }, [page, isAuth]);
-  const handleScroll = () => {
-    if (window.scrollY + window.innerHeight >= document.body.offsetHeight) {
+  const handleScroll = debounce(() => {
+    if (
+      window.scrollY + window.innerHeight >= document.body.offsetHeight &&
+      !loading
+    ) {
       setPage((page) => page + 1);
     }
     if (window.scrollY >= 100) {
@@ -69,7 +73,7 @@ const Following = () => {
     } else {
       setHideBtn(true);
     }
-  };
+  }, 100);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
